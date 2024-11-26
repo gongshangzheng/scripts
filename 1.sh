@@ -241,6 +241,18 @@ case "$1" in
         git commit || return
         git push origin master || return
         ;;
+    push-scripts|ps)
+        if [ ! -d ~/scripts ]; then
+            echo "Scripts directory not found. Please clone the repository first."
+            return
+        fi
+        cd ~/scripts || return
+        git checkout master || return
+        git pull origin master || return
+        git add . || return
+        git commit || return
+        git push origin master || return
+        ;;
     push-all|pa)
         bash 1 push-vim-config || return
         bash 1 push-blog || return
