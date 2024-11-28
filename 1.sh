@@ -276,7 +276,7 @@ case "$1" in
         bash 1 push-rime || return
         bash 1 push-doom || return
         bash 1 push-scripts || return
-        bash 1 push-note || return
+        #bash 1 push-note || return
         bash 1 push-code || return
         bash 1 push-post || return
         ;;
