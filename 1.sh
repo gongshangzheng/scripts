@@ -283,7 +283,7 @@ case "$1" in
         bash 1 scripts || return
         bash 1 vim || return
         bash 1 blog || return
-        bash 1 code || return
+        #bash 1 code || return
         bash 1 note || return
         ;;
     rime|-r)
@@ -435,6 +435,5 @@ case "$1" in
     *)
         echo "Error: Invalid option '$1'"
         show_help
-        return
 esac
 
