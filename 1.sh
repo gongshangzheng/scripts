@@ -56,6 +56,19 @@ show_help() {
     echo "Example: $0 novel"
     echo "PS: if you want to use -n, -b, -c, or note, you need to add . before the command."
 }
+push_scripts() {
+    echo "Pushing scripts..."
+    if [ ! -d ~/scripts ]; then
+        echo "Scripts directory not found. Please clone the repository first."
+        return 1
+    fi
+    cd ~/scripts || return 1
+    git checkout master || return 1
+    git pull origin master || return 1
+    git add . || return 1
+    git commit || return 1
+    git push origin master || return 1
+}
 
 # If no argument is provided, show help
 if [ -z "$1" ]; then
@@ -92,6 +105,12 @@ case "$1" in
         . 1 pla || return 1
         sudo shutdown -h now || return 1
         ;;
+    reboot)
+        . 1 pa || return 1
+        . 1 pla || return 1
+        sudo reboot -h now || return 1
+        ;;
+
     begin)
         1 pla || return 1
         ;;
@@ -422,20 +441,11 @@ case "$1" in
         git pull origin master || return 1
         pwd
         ;;
-    push-scrpits|psc)
-        echo "Pushing scripts..."
-        if [ ! -d ~/scripts ]; then
-            echo "Scripts directory not found. Please clone the repository first."
-            return 1
-        fi
-        cd ~/scripts || return 1
-        git checkout master || return 1
-        git pull origin master || return 1
-        git add . || return 1
-        git commit || return 1
-        git push origin master || return 1
+    push-scripts|psc)
+        push_scripts
         ;;
     *)
         echo "Error: Invalid option '$1'"
         show_help
+        ;;
 esac
