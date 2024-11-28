@@ -21,6 +21,7 @@ show_help() {
     echo "Commands:"
     echo "  init                   Initialize the script by creating a symbolic link in /usr/local/bin/1."
     echo "  ====================================================="
+    echo "  begin                  Begin the system."
     echo "  halt                   Halt the system."
     echo "  ====================================================="
     echo "  -h, help               Show this help message."
@@ -91,6 +92,9 @@ case "$1" in
         1 pa || return
         1 pla || return
         sudo shutdown -h now || return
+        ;;
+    begin)
+        1 pla || return
         ;;
     -s|modify-script)
         echo "Modifying script..."
@@ -182,7 +186,7 @@ case "$1" in
         cd ~/.vim_runtime || return
         git checkout master || return
         git pull origin master || return
-        vim my_configs.vim
+        #vim my_configs.vim
         ;;
     ss|show-size)
         du -sh .[!.]* * | sort -h
