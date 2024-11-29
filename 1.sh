@@ -23,6 +23,7 @@ show_help() {
     echo "  ====================================================="
     echo "  begin                  Begin the system."
     echo "  halt                   Halt the system."
+    echo "  reboot                 Reboot the system."
     echo "  ====================================================="
     echo "  -h, help               Show this help message."
     echo "  -s, modify-script      Modify the script (opens vim for editing)."
@@ -37,6 +38,7 @@ show_help() {
     echo "  sc, scripts                   Update scripts."
     echo "  ====================================================="
     echo "  hugo                   Run hugo server for the blog."
+    echo "  markdown-org           convert markdown to org."
     echo "  ====================================================="
     echo "  pla, pull-all               Pull all content from git."
     echo "  ====================================================="
@@ -56,20 +58,125 @@ show_help() {
     echo "Example: $0 novel"
     echo "PS: if you want to use -n, -b, -c, or note, you need to add . before the command."
 }
-push_scripts() {
-    echo "Pushing scripts..."
-    if [ ! -d ~/scripts ]; then
-        echo "Scripts directory not found. Please clone the repository first."
+
+push_git_directory(){
+    dirname="$1"
+    echo "========================================================"
+    echo "Pushing $dirname..."
+    echo "========================================================"
+    if [ ! -d "$dirname" ]; then
+        echo "Directory $dirname not found. Please clone the repository first."
         return 1
     fi
-    cd ~/scripts || return 1
+    cd "$dirname" || return 1
     git checkout master || return 1
     git pull origin master || return 1
     git add . || return 1
-    git commit || return 1
+    git commit
     git push origin master || return 1
 }
 
+pull_git_directory(){
+    dirname="$1"
+    echo "========================================================"
+    echo "Pulling $dirname..."
+    echo "========================================================"
+    if [ ! -d "$dirname" ]; then
+        echo "Directory $dirname not found. Please clone the repository first."
+        return 1
+    fi
+    cd "$dirname" || return 1
+    git checkout master || return 1
+    git pull origin master || return 1
+}
+
+init_system(){
+
+    if [[ "$(uname)" == "Darwin" ]]; then
+        # macOS
+        sudo softwareupdate -i -a || return 1
+        # homebrew
+        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"|| return 1
+        # git
+        brew install git || return 1
+        # vim
+        brew install vim || return 1
+        # required dependencies
+        brew install git ripgrep || return 1
+        # optional dependencies
+        brew install coreutils fd || return 1
+        # Installs clang
+        xcode-select --install || return 1
+        # emacs
+        brew --cask install emacs || return 1
+        # alfred
+        brew install --cask alfred || return 1
+    elif [[ "$(uname)" == "Linux" ]]; then
+        # Linux
+        sudo apt update || return 1
+        sudo apt upgrade || return 1
+        sudo apt install -y git || return 1
+        sudo apt install -y vim || return 1
+        sudo apt install -y fish || return 1
+        sudo apt install -y python3 || return 1
+        sudo apt install -y python3-pip || return 1
+        sudo apt install -y python3-venv || return 1
+        #sudo apt install -y nodejs || return 1
+        #sudo apt install -y npm || return 1
+        #sudo apt install -y hugo || return 1
+        #sudo apt install -y cmake || return 1
+        #emacs
+        snap install emacs --classic || return 1
+        sudo apt-get install ripgrep fd-find || return 1
+    fi
+    git clone https://github.com/hlissner/doom-emacs ~/.emacs.d || return 1
+    ~/.emacs.d/bin/doom install || return 1
+    git config --global core.quotepath false || return 1
+    git config merge.tool vimdiff || return 1
+}
+
+markdown_org(){
+    # 定义路径
+    ORG_DIR="$HOME/.doom.d/org/novel"
+    MD_DIR="$(pwd)"
+
+    # 使用 zsh 和 bash 兼容的方式读取用户输入
+    echo -n "是否递归处理子目录？(y/n): "
+    read recursive
+    echo -n "确认开始转换吗？(y/n): "
+    read confirm
+
+    if [[ "$confirm" != "y" ]]; then
+        echo "操作已取消。"
+        return 0
+    fi
+
+    # 创建 Org 保存目录
+    mkdir -p "$ORG_DIR"
+
+    # 定义查找方式（递归或非递归）
+    if [[ "$recursive" == "y" ]]; then
+        find_command="find $MD_DIR -type f -name '*.md'"
+    else
+        find_command="find $MD_DIR -maxdepth 1 -type f -name '*.md'"
+    fi
+
+    # 转换 .md 文件为 .org 文件
+    eval "$find_command" | while read -r f; do
+    # 获取相对路径
+    relative_path=$(realpath --relative-to="$MD_DIR" "$f")
+    # 构造输出目录
+    output_dir="$ORG_DIR/$(dirname "$relative_path")"
+    mkdir -p "$output_dir"
+    # 构造输出文件路径
+    output_file="$output_dir/$(basename "${f%.md}.org")"
+    # 转换文件
+    pandoc -f markdown -t org -o "$output_file" "$f"
+    echo "已转换: $f -> $output_file"
+done
+
+echo "所有转换已完成。"
+}
 # If no argument is provided, show help
 if [ -z "$1" ]; then
     show_help
@@ -84,8 +191,8 @@ case "$1" in
     init)
         script_path=$(realpath "$0") || return 1
         #if [ -L "/usr/local/bin/1" ]; then
-            #echo "The script is already initialized."
-            #exit 0
+        #echo "The script is already initialized."
+        #exit 0
         #fi
         if [ -f "/usr/local/bin/1" ]; then
             # delete it
@@ -100,78 +207,42 @@ case "$1" in
         fi
         echo "The script has been initialized."
         ;;
+    markdown-org)
+        markdown_org
+        ;;
     halt)
-        . 1 pa || return 1
         . 1 pla || return 1
+        . 1 pa || return 1
         sudo shutdown -h now || return 1
         ;;
     reboot)
-        . 1 pa || return 1
         . 1 pla || return 1
+        . 1 pa || return 1
         sudo reboot -h now || return 1
         ;;
 
     begin)
-        1 pla || return 1
+        . 1 pla || return 1
+        . 1 pa || return 1
         ;;
     -s|modify-script)
         echo "Modifying script..."
         vim /usr/local/bin/1
         ;;
     -c|code)
-        echo "Updating code directory..."
-        if [ ! -d ~/Code ]; then
-            echo "Code directory not found. Please clone the repository first."
-            return 1
-        fi
-        cd ~/Code || return 1
-        git checkout master || return 1
-        git pull origin master || return 1
-        pwd
+        pull_git_directory ~/Code
         ;;
     -n|novel)
-        echo "Updating novel directory..."
-        if [ ! -d ~/blogs/content/zh/novel ]; then
-            echo "Novel directory not found. Please clone the repository first."
-            return 1
-        fi
-        cd ~/blogs/content/zh/novel || return 1
-        git checkout master || return 1
-        git pull origin master || return 1
-        pwd
+        pull_git_directory ~/blogs/content/zh/novel
         ;;
     -p|post)
-        echo "Updating post directory..."
-        if [ ! -d ~/blogs/content/zh/posts ]; then
-            echo "Post directory not found. Please clone the repository first."
-            return 1
-        fi
-        cd ~/blogs/content/zh/posts || return 1
-        git checkout master || return 1
-        git pull origin master || return 1
-        pwd
+        pull_git_directory ~/blogs/content/zh/posts
         ;;
     -b|blog)
-        echo "Updating blog directory..."
-        if [ ! -d ~/blogs ]; then
-            echo "Blog directory not found. Please clone the repository first."
-            return 1
-        fi
-        cd ~/blogs || return 1
-        git checkout master || return 1
-        git pull origin master || return 1
-        pwd
+        pull_git_directory ~/blogs
         ;;
     note)
-        echo "Updating note directory..."
-        if [ ! -d ~/note ]; then
-            echo "Note directory not found. Please clone the repository first."
-            return 1
-        fi
-        cd ~/note || return 1
-        git checkout master || return 1
-        git pull origin master || return 1
-        pwd
+        pull_git_directory ~/note
         ;;
     hugo)
         echo "Starting Hugo server..."
@@ -196,97 +267,26 @@ case "$1" in
         python create_file.py
         ;;
     -v|vim)
-        echo "Opening Vim configuration..."
-        if [ ! -d ~/.vim_runtime ]; then
-            echo "Vim directory not found. Please clone the repository first."
-            return 1
-        fi
-        cd ~/.vim_runtime || return 1
-        git checkout master || return 1
-        git pull origin master || return 1
-        #vim my_configs.vim
+        pull_git_directory ~/.vim_runtime
         ;;
     ss|show-size)
         du -sh .[!.]* * | sort -h
         ;;
 
     push-vim-config|pvc)
-        echo "Pushing Vim config..."
-        if [ ! -d ~/.vim_runtime ]; then
-            echo "Vim directory not found. Please clone the repository first."
-            return 1
-        fi
-        cd ~/.vim_runtime || return 1
-        git checkout master || return 1
-        git pull origin master || return 1
-        git add my_configs.vim || return 1
-        git add vimrcs || return 1
-        git add UltiSnips || return 1
-        git commit || return 1
-        git push origin master || return 1
+        push_git_directory ~/.vim_runtime
         ;;
     push-blog|pb)
-        if [ ! -d ~/blogs ]; then
-            echo "Blog directory not found. Please clone the repository first."
-            return 1
-        fi
-        cd ~/blogs || return 1
-        git checkout master || return 1
-        git pull origin master || return 1
-        git add . || return 1
-        git commit || return 1
-        git push origin master || return 1
+        push_git_directory ~/blogs
         ;;
     push-note|pn)
-        echo "Pushing note..."
-        if [ ! -d ~/note ]; then
-            echo "Note directory not found. Please clone the repository first."
-            return 1
-        fi
-        cd ~/note || return 1
-        git checkout master || return 1
-        git pull origin master || return 1
-        git add . || return 1
-        git commit || return 1
-        git push origin master || return 1
+        push_git_directory ~/note
         ;;
     push-code|pc)
-        if [ ! -d ~/Code ]; then
-            echo "Code directory not found. Please clone the repository first."
-            return 1
-        fi
-        cd ~/Code || return 1
-        git checkout master || return 1
-        git pull origin master || return 1
-        git add . || return 1
-        git commit || return 1
-        git push origin master || return 1
+        push_git_directory ~/Code
         ;;
     push-post|pp)
-        echo "Pushing post..."
-        if [ ! -d ~/blogs/content/zh/posts ]; then
-            echo "Post directory not found. Please clone the repository first."
-            return 1
-        fi
-        cd ~/blogs/content/zh/posts || return 1
-        git checkout master || return 1
-        git pull origin master || return 1
-        git add . || return 1
-        git commit || return 1
-        git push origin master || return 1
-        ;;
-    push-scripts|ps)
-        echo "Pushing scripts..."
-        if [ ! -d ~/scripts ]; then
-            echo "Scripts directory not found. Please clone the repository first."
-            return 1
-        fi
-        cd ~/scripts || return 1
-        git checkout master || return 1
-        git pull origin master || return 1
-        git add . || return 1
-        git commit || return 1
-        git push origin master || return 1
+        push_git_directory ~/blogs/content/zh/posts
         ;;
     push-all|pa)
         bash 1 push-vim-config || return 1
@@ -345,107 +345,25 @@ case "$1" in
             echo "Unsupported operating system."
             return 1
         fi
-
-        echo "Pushing Rime configuration..."
-        # Check if the Rime directory exists
-        if [ ! -d "$RIME_DIR" ]; then
-            echo "Rime directory not found. Please clone the repository first."
-            return 1
-        fi
-
-        # Navigate to the Rime directory and update the repository
-        cd "$RIME_DIR" || return 1
-        git checkout master || return 1
-        git pull origin master || return 1
-        git add . || return 1
-        git commit || return 1
-        git push origin master || return 1
-        pwd
+        push_git_directory "$RIME_DIR"
         ;;
     init-system|is)
         # Detect the operating system
-        if [[ "$(uname)" == "Darwin" ]]; then
-            # macOS
-            sudo softwareupdate -i -a || return 1
-            # homebrew
-            /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"|| return 1
-            # git
-            brew install git || return 1
-            # vim
-            brew install vim || return 1
-            # required dependencies
-            brew install git ripgrep || return 1
-            # optional dependencies
-            brew install coreutils fd || return 1
-            # Installs clang
-            xcode-select --install || return 1
-            # emacs
-            brew --cask install emacs || return 1
-            # alfred
-            brew install --cask alfred || return 1
-        elif [[ "$(uname)" == "Linux" ]]; then
-            # Linux
-            sudo apt update || return 1
-            sudo apt upgrade || return 1
-            sudo apt install -y git || return 1
-            sudo apt install -y vim || return 1
-            sudo apt install -y fish || return 1
-            sudo apt install -y python3 || return 1
-            sudo apt install -y python3-pip || return 1
-            sudo apt install -y python3-venv || return 1
-            #sudo apt install -y nodejs || return 1
-            #sudo apt install -y npm || return 1
-            #sudo apt install -y hugo || return 1
-            #sudo apt install -y cmake || return 1
-            #emacs
-            snap install emacs --classic || return 1
-            sudo apt-get install ripgrep fd-find || return 1
-        fi
-        git clone https://github.com/hlissner/doom-emacs ~/.emacs.d || return 1
-        ~/.emacs.d/bin/doom install || return 1
-        git config --global core.quotepath false || return 1
-        git config merge.tool vimdiff || return 1
+        init_system
         ;;
     push-doom|pd)
-        echo "Pushing doom configuration..."
-        if [ ! -d ~/.doom.d ]; then
-            echo "Doom directory not found. Please clone the repository first."
-            return 1
-        fi
-        cd ~/.doom.d || return 1
-        git checkout master || return 1
-        git pull origin master || return 1
-        git add . || return 1
-        git commit || return 1
-        git push origin master || return 1
+        push_git_directory ~/.doom.d
         ;;
     doom)
-        echo "Updating doom configuration..."
-        if [ ! -d ~/.doom.d ]; then
-            echo "Doom directory not found. Please clone the repository first."
-            return 1
-        fi
-        cd ~/.doom.d || return 1
-        git checkout master || return 1
-        git pull origin master || return 1
-        pwd
+        pull_git_directory ~/.doom.d
         ;;
     scripts|sc)
-        echo "Updating scripts..."
-        if [ ! -d ~/scripts ]; then
-            echo "Scripts directory not found. Please clone the repository first."
-            return 1
-        fi
-        cd ~/scripts || return 1
-        git checkout master || return 1
-        git pull origin master || return 1
-        pwd
+        pull_git_directory ~/scripts
         ;;
     push-scripts|psc)
-        push_scripts
+        push_git_directory ~/scripts
         ;;
     *)
         echo "Error: Invalid option '$1'"
         show_help
-        ;;
 esac
