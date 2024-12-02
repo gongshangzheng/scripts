@@ -39,12 +39,6 @@ show_help() {
     echo "  ====================================================="
     echo "  hugo                   Run hugo server for the blog."
     echo "  markdown-org           convert markdown to org."
-    echo "  hn, hugo-new               Create a new hugo post."
-    echo "  ss, show-size               Show the size of all files in the current directory."
-    echo "  server                  Connect to the server."
-    echo "  server2                Connect to the server2."
-    echo "  server-aws             Connect to the server-aws."
-    echo "  dict                   Add words to the dictionary."
     echo "  ====================================================="
     echo "  pla, pull-all               Pull all content from git."
     echo "  ====================================================="
@@ -58,41 +52,11 @@ show_help() {
     echo "  pd, push-doom              Push doom configuration to git."
     echo "  psc, push-scripts          Push scripts to git."
     echo "  ====================================================="
+    echo "  ss, show-size               Show the size of all files in the current directory."
+    echo "  hn, hugo-new               Create a new hugo post."
     echo ""
     echo "Example: $0 novel"
     echo "PS: if you want to use -n, -b, -c, or note, you need to add . before the command."
-}
-
-connect_to_server(){
-    #ssh -i ~/.ssh/id_rsa gongshang@47.93.37.219
-    ssh -i ~/.ssh/id_rsa gongshang@47.93.27.152
-}
-
-connect_to_server2(){
-    #ssh -i ~/.ssh/id_rsa gongshang@47.93.37.219
-    # ssh-copy-id xinyu@87.106.191.101
-    ssh -i ~/.ssh/id_rsa xinyu@87.106.191.101
-}
-
-connect_to_server_aws(){
-    sudo ssh -i ~/Documents/configs/servers/AWS-EC2-key.pem ubuntu@16.170.255.25
-}
-
-dict(){
-    echo "========================================================"
-    echo "Adding words to the dictionary..."
-    echo "========================================================"
-    # judge the operating system
-    if [[ "$(uname)" == "Darwin" ]]; then
-        # macOS
-        vim "$HOME/Library/Rime/wubi86_jidian.user.yaml"
-    elif [[ "$(uname)" == "Linux" ]]; then
-        # Linux
-        vim "$HOME/.config/ibus/rime/wubi86_jidian_user.dict.yaml"
-    else
-        echo "Unsupported operating system."
-        return 1
-    fi
 }
 
 push_git_directory(){
@@ -241,11 +205,7 @@ case "$1" in
                 exit 0
             fi
         fi
-        sudo ln -s "$script_path" /usr/local/bin/1
         echo "The script has been initialized."
-        ;;
-    server-aws)
-        connect_to_server_aws
         ;;
     markdown-org)
         markdown_org
@@ -264,15 +224,6 @@ case "$1" in
     begin)
         . 1 pla || return 1
         . 1 pa || return 1
-        ;;
-    server)
-        connect_to_server
-        ;;
-    server2)
-        connect_to_server2
-        ;;
-    dict)
-        dict
         ;;
     -s|modify-script)
         echo "Modifying script..."
