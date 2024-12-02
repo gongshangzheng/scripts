@@ -123,6 +123,8 @@ pull_git_directory(){
     fi
     cd "$dirname" || return 1
     git checkout master || return 1
+    git add . || return 1
+    git commit
     git pull origin master || return 1
 }
 
