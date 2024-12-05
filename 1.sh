@@ -65,7 +65,7 @@ show_help() {
 
 connect_to_server(){
     #ssh -i ~/.ssh/id_rsa gongshang@47.93.37.219
-    ssh -i ~/.ssh/id_rsa gongshang@47.93.27.152
+    ssh -i ~/.ssh/id_rsa xinyu@47.93.27.152
 }
 
 connect_to_server2(){
