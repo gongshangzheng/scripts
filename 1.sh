@@ -41,6 +41,7 @@ show_help() {
     echo "  markdown-org           convert markdown to org."
     echo "  hn, hugo-new               Create a new hugo post."
     echo "  ss, show-size               Show the size of all files in the current directory."
+    echo "  sd, show-dpkg               Show the size of all dpkg packages."
     echo "  server                  Connect to the server."
     echo "  server2                Connect to the server2."
     echo "  server-aws             Connect to the server-aws."
@@ -281,7 +282,7 @@ case "$1" in
         vim /usr/local/bin/1
         ;;
     -c|code)
-        pull_git_directory ~/Code
+        echo "This is your git file"
         ;;
     -n|novel)
         pull_git_directory ~/blogs/content/zh/novel
@@ -323,6 +324,9 @@ case "$1" in
     ss|show-size)
         du -sh .[!.]* * | sort -h
         ;;
+    sd|show-dpkg)
+	dpkg-query -Wf '${Installed-Size}\t${Package}\n' | sort -n | tail -n 20
+	;;
 
     push-vim-config|pvc)
         push_git_directory ~/.vim_runtime
@@ -334,7 +338,7 @@ case "$1" in
         push_git_directory ~/note
         ;;
     push-code|pc)
-        push_git_directory ~/Code
+        echo "This is your code file"
         ;;
     push-post|pp)
         push_git_directory ~/blogs/content/zh/posts
