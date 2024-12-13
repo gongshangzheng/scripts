@@ -40,7 +40,6 @@ init() {
 
 # 定义 clean 函数
 clean() {
-  git rm -r --cached .
   git gc --prune=now --aggressive
   echo "Git garbage collection complete."
 }
