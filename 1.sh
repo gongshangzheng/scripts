@@ -42,6 +42,7 @@ show_help() {
     echo "  hn, hugo-new               Create a new hugo post."
     echo "  ss, show-size               Show the size of all files in the current directory."
     echo "  sd, show-dpkg               Show the size of all dpkg packages."
+    echo "  sk, sk-conf                change surfingkeys configuration."
     echo "  server                  Connect to the server."
     echo "  server2                Connect to the server2."
     echo "  server-aws             Connect to the server-aws."
@@ -77,6 +78,16 @@ connect_to_server2(){
 
 connect_to_server_aws(){
     sudo ssh -i ~/Documents/configs/servers/AWS-EC2-key.pem ubuntu@16.171.150.115
+}
+
+surfingkeyChangeConfiguration(){
+    cd ~/application/surfingkeys-conf/
+    npm run gulp install
+    cp ~/.config/surfingkeys.js ~/scripts/
+    cd ~/scripts
+    git add surfingkeys.js
+    git commit -m "update surfingkeys.js"
+    git push
 }
 
 dict(){
@@ -414,6 +425,9 @@ case "$1" in
         ;;
     scripts|sc)
         pull_git_directory ~/scripts
+        ;;
+    sk|sk-conf)
+        surfingkeyChangeConfiguration
         ;;
     push-scripts|psc)
         push_git_directory ~/scripts
