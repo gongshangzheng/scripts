@@ -32,7 +32,7 @@ mapkey("<Space>", "pause/resume on youtube", function() {
     btn.click();
 }, {domain: /youtube.com/i});
 
-map("<ctrl-g>", '<Esc>');
+api.map("<ctrl-g>", '<Esc>');
 
 /////////////////////////////////////////////
 // searchalias
@@ -49,11 +49,11 @@ addSearchAlias('d', 'duckduckgo', 'https://duckduckgo.com/?q=', 's', 'https://du
 // set style
 /////////////////////////////////////////////
 
-Hints.style('border: solid 3px #552a48; color:#efe1eb; background: none; background-color: #552a48;');
-Hints.style("div{border: solid 3px #707070; color:#efe1eb; background: none; background-color: #707070;} div.begin{color:red;}", "text");
+api.Hints.style('border: solid 3px #552a48; color:#efe1eb; background: none; background-color: #552a48;');
+api.Hints.style("div{border: solid 3px #707070; color:#efe1eb; background: none; background-color: #707070;} div.begin{color:red;}", "text");
 
-Visual.style('marks', 'background-color: #89a1e2;');
-Visual.style('cursor', 'background-color: #9065b7;');
+api.Visual.style('marks', 'background-color: #89a1e2;');
+api.Visual.style('cursor', 'background-color: #9065b7;');
 
 /////////////////////////////////////////////
 // set theme
