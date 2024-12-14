@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 #!/bin/bash
 # ================================================================
 #   Copyright (C) 2024 www.361way.com site All rights reserved.
@@ -18,7 +17,7 @@ SCRIPT_PATH=$(realpath "$0")
 
 # 定义 help 函数
 help() {
-  echo "Usage: my_git.sh [command]"
+  echo "Usage: mgit.sh [command]"
   echo ""
   echo "Commands:"
   echo "  help, -h         Show this help message"
@@ -30,13 +29,19 @@ help() {
 
 # 定义 init 函数
 init() {
-  if [ -e /usr/local/bin/my_git ]; then
-    echo "my_git is already installed."
-  else
-    sudo ln -s "$SCRIPT_PATH" /usr/local/bin/mgit
-    sudo chmod +x /usr/local/bin/mgit
-    echo "mgit has been successfully installed."
+  if [ -f /usr/local/bin/mgit ]; then
+    echo "mgit is already installed."
+    printf "%s" "Do you want to delete it? (y/n)"
+    read -r response
+    if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
+        sudo rm /usr/local/bin/mgit
+    else
+        echo "The script is not initialized."
+        exit 0
+    fi
   fi
+  sudo ln -s "$SCRIPT_PATH" /usr/local/bin/mgit
+  echo "mgit has been successfully installed."
 }
 
 # 定义 clean 函数

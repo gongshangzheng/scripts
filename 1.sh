@@ -76,7 +76,7 @@ connect_to_server2(){
 }
 
 connect_to_server_aws(){
-    sudo ssh -i ~/Documents/configs/servers/AWS-EC2-key.pem ubuntu@13.60.214.184
+    sudo ssh -i ~/Documents/configs/servers/AWS-EC2-key.pem ubuntu@16.171.150.115
 }
 
 dict(){
