@@ -9,6 +9,13 @@ api.map('gt', 'T');
 // an example to remove mapkey `Ctrl-i`
 api.unmap('<ctrl-i>');
 
+//lurk mode
+
+settings.lurkingPattern = /https:\/\/(www\.)?(youtube\.com|gmail\.com|bilibili\.com)/i;
+api.cmap('<Ctrl-n>', '<Tab>');
+api.cmap('<Ctrl-p>', '<Shift-Tab>');
+
+
 // set theme
 settings.theme = `
 .sk_theme {
