@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 #!/bin/bash
 # ================================================================
 #   Copyright (C) 2024 www.361way.com site All rights reserved.
