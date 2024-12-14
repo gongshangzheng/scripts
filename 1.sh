@@ -84,9 +84,13 @@ surfingkeyChangeConfiguration(){
     cd ~/application/surfingkeys-conf/
     npm run gulp install
     cp ~/.config/surfingkeys.js ~/scripts/
+    #append surfingkeys_custom.js to the end of surfingkeys.js
+    cat ~/scripts/surfingkeys_custom.js >> ~/scripts/surfingkeys.js
     cd ~/scripts
     git add surfingkeys.js
-    git commit -m "update surfingkeys.js"
+    # get a new parameter as the commit message
+    read -p "Enter the commit message: " commit_message
+    git commit -m "$commit_message"
     git push
 }
 

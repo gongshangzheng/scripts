@@ -68,56 +68,56 @@ api.addSearchAlias('d', 'duckduckgo', 'https://duckduckgo.com/?q=', 's', 'https:
     });
 });
 
-/////////////////////////////////////////////
-// set style
-/////////////////////////////////////////////
-
-api.Hints.style('border: solid 3px #552a48; color:#efe1eb; background: none; background-color: #552a48;');
-api.Hints.style("div{border: solid 3px #707070; color:#efe1eb; background: none; background-color: #707070;} div.begin{color:red;}", "text");
-
-api.Visual.style('marks', 'background-color: #89a1e2;');
-api.Visual.style('cursor', 'background-color: #9065b7;');
-
-/////////////////////////////////////////////
-// set theme
-/////////////////////////////////////////////
-settings.theme = `
-.sk_theme {
-    font-family: Input Sans Condensed, Charcoal, sans-serif;
-    font-size: 10pt;
-    background: #24272e;
-    color: #abb2bf;
-}
-.sk_theme tbody {
-    color: #fff;
-}
-.sk_theme input {
-    color: #d0d0d0;
-}
-.sk_theme .url {
-    color: #61afef;
-}
-.sk_theme .annotation {
-    color: #56b6c2;
-}
-.sk_theme .omnibar_highlight {
-    color: #528bff;
-}
-.sk_theme .omnibar_timestamp {
-    color: #e5c07b;
-}
-.sk_theme .omnibar_visitcount {
-    color: #98c379;
-}
-.sk_theme #sk_omnibarSearchResult ul li:nth-child(odd) {
-    background: #303030;
-}
-.sk_theme #sk_omnibarSearchResult ul li.focused {
-    background: #3e4452;
-}
-#sk_status, #sk_find {
-    font-size: 20pt;
-}`;
-// click `Save` button to make above settings to take effect.</ctrl-i></ctrl-y>
-
-
+///////////////////////////////////////////////
+//// set style
+///////////////////////////////////////////////
+//
+//api.Hints.style('border: solid 3px #552a48; color:#efe1eb; background: none; background-color: #552a48;');
+//api.Hints.style("div{border: solid 3px #707070; color:#efe1eb; background: none; background-color: #707070;} div.begin{color:red;}", "text");
+//
+//api.Visual.style('marks', 'background-color: #89a1e2;');
+//api.Visual.style('cursor', 'background-color: #9065b7;');
+//
+///////////////////////////////////////////////
+//// set theme
+///////////////////////////////////////////////
+//settings.theme = `
+//.sk_theme {
+//    font-family: Input Sans Condensed, Charcoal, sans-serif;
+//    font-size: 10pt;
+//    background: #24272e;
+//    color: #abb2bf;
+//}
+//.sk_theme tbody {
+//    color: #fff;
+//}
+//.sk_theme input {
+//    color: #d0d0d0;
+//}
+//.sk_theme .url {
+//    color: #61afef;
+//}
+//.sk_theme .annotation {
+//    color: #56b6c2;
+//}
+//.sk_theme .omnibar_highlight {
+//    color: #528bff;
+//}
+//.sk_theme .omnibar_timestamp {
+//    color: #e5c07b;
+//}
+//.sk_theme .omnibar_visitcount {
+//    color: #98c379;
+//}
+//.sk_theme #sk_omnibarSearchResult ul li:nth-child(odd) {
+//    background: #303030;
+//}
+//.sk_theme #sk_omnibarSearchResult ul li.focused {
+//    background: #3e4452;
+//}
+//#sk_status, #sk_find {
+//    font-size: 20pt;
+//}`;
+//// click `Save` button to make above settings to take effect.</ctrl-i></ctrl-y>
+//
+//
