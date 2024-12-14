@@ -27,7 +27,7 @@ api.mapkey('<Space>', 'Choose a tab with omnibar', function() {
 // mapkeys
 /////////////////////////////////////////////
 
-mapkey("<Space>", "pause/resume on youtube", function() {
+api.mapkey("<Space>", "pause/resume on youtube", function() {
     var btn = document.querySelector("button.ytp-ad-overlay-close-button") || document.querySelector("button.ytp-ad-skip-button") || document.querySelector('ytd-watch-flexy button.ytp-play-button');
     btn.click();
 }, {domain: /youtube.com/i});
@@ -38,7 +38,7 @@ api.map("<ctrl-g>", '<Esc>');
 // searchalias
 /////////////////////////////////////////////
 
-addSearchAlias('d', 'duckduckgo', 'https://duckduckgo.com/?q=', 's', 'https://duckduckgo.com/ac/?q=', 'l', 'http://16.171.150.115:9090/bookmarks?q=', 'b', 'https://search.bilibili.com/all?keyword=', function(response) {
+add.addSearchAlias('d', 'duckduckgo', 'https://duckduckgo.com/?q=', 's', 'https://duckduckgo.com/ac/?q=', 'l', 'http://16.171.150.115:9090/bookmarks?q=', 'b', 'https://search.bilibili.com/all?keyword=', function(response) {
     var res = JSON.parse(response.text);
     return res.map(function(r){
         return r.phrase;
