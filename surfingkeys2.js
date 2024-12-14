@@ -33,6 +33,29 @@ api.mapkey("<Space>", "pause/resume on youtube", function() {
 }, {domain: /youtube.com/i});
 
 api.map("<ctrl-g>", '<Esc>');
+api.map('F', 'gf'); // open in new unactive tab
+api.mapkey('p', "Open the clipboard's URL in the current tab", function() {
+    navigator.clipboard.readText().then(
+        text => {
+            if (text.startsWith("http://") || text.startsWith("https://")) {
+                window.location = text;
+            } else {
+                window.location = text = "https://www.google.com/search?q=" + text;
+            }
+        }
+    );
+});
+api.mapkey('P', 'Open link from clipboard', function() {
+    navigator.clipboard.readText().then(
+        text => {
+            if (text.startsWith("http://") || text.startsWith("https://")) {
+                tabOpenLink(text);
+            } else {
+                tabOpenLink("https://www.google.com/search?q=" + text);
+            }
+        }
+    );
+});
 
 /////////////////////////////////////////////
 // searchalias
@@ -97,7 +120,4 @@ settings.theme = `
 }`;
 // click `Save` button to make above settings to take effect.</ctrl-i></ctrl-y>
 
-/////////////////////////////////////////////////
-// surfingkey conf
-/////////////////////////////////////////////////
 
