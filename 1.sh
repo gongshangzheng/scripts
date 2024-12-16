@@ -42,10 +42,13 @@ show_help() {
     echo "  hn, hugo-new               Create a new hugo post."
     echo "  ss, show-size               Show the size of all files in the current directory."
     echo "  sd, show-dpkg               Show the size of all dpkg packages."
+    echo "  sk, sk-conf                change surfingkeys configuration."
+    echo "  grep                   grep phrase."
     echo "  server                  Connect to the server."
     echo "  server2                Connect to the server2."
     echo "  server-aws             Connect to the server-aws."
-    echo "  dict                   Add words to the dictionary."
+    echo "  dict                   Add words to the custom dictionary."
+    echo "  dict2                   Add words to the dictionary."
     echo "  ====================================================="
     echo "  pla, pull-all               Pull all content from git."
     echo "  ====================================================="
@@ -76,12 +79,30 @@ connect_to_server2(){
 }
 
 connect_to_server_aws(){
-    sudo ssh -i ~/Documents/configs/servers/AWS-EC2-key.pem ubuntu@13.60.214.184
+    sudo ssh -i ~/Documents/configs/servers/AWS-EC2-key.pem ubuntu@16.171.150.115
+}
+
+surfingkeyChangeConfiguration(){
+    cd ~/application/surfingkeys-conf/
+    npm use 22.11.0
+    npm run gulp install
+    cp ~/.config/surfingkeys.js ~/scripts/
+    #append surfingkeys_custom.js to the end of surfingkeys.js
+    #cat ~/scripts/surfingkeys_custom.js >> ~/scripts/surfingkeys.js
+    cd ~/scripts/
+    git add surfingkeys.js
+    # get a new parameter as the commit message
+    read -p "Enter the commit message: " commit_message
+    git commit -m "$commit_message"
+    git push
+    cd ~/application/surfingkeys-conf
+    git add src
+    git commit -m "$commit_message"
 }
 
 dict(){
     echo "========================================================"
-    echo "Adding words to the dictionary..."
+    echo "Adding words to the custom dictionary..."
     echo "========================================================"
     # judge the operating system
     if [[ "$(uname)" == "Darwin" ]]; then
@@ -94,6 +115,30 @@ dict(){
         echo "Unsupported operating system."
         return 1
     fi
+}
+dict2(){
+    echo "========================================================"
+    echo "Adding words to the dictionary..."
+    echo "========================================================"
+    # judge the operating system
+    if [[ "$(uname)" == "Darwin" ]]; then
+        # macOS
+        vim "$HOME/Library/Rime/wubi86_jidian.user.yaml"
+    elif [[ "$(uname)" == "Linux" ]]; then
+        # Linux
+        vim "$HOME/.config/ibus/rime/wubi86_jidian.dict.yaml"
+    else
+        echo "Unsupported operating system."
+        return 1
+    fi
+}
+
+grep_phrase(){
+    phrase="$1"
+    echo "========================================================"
+    echo "Grep phrase: $phrase"
+    echo "========================================================"
+    grep -rn --exclude-dir={".git","node_modules","build","assets"} "$phrase" .
 }
 
 push_git_directory(){
@@ -277,6 +322,9 @@ case "$1" in
     dict)
         dict
         ;;
+    dict2)
+        dict2
+        ;;
     -s|modify-script)
         echo "Modifying script..."
         vim /usr/local/bin/1
@@ -415,8 +463,14 @@ case "$1" in
     scripts|sc)
         pull_git_directory ~/scripts
         ;;
+    sk|sk-conf)
+        surfingkeyChangeConfiguration
+        ;;
     push-scripts|psc)
         push_git_directory ~/scripts
+        ;;
+    grep)
+        grep_phrase "$2"
         ;;
     *)
         echo "Error: Invalid option '$1'"
