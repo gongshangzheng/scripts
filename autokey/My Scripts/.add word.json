@@ -2,13 +2,17 @@
     "type": "script",
     "description": "add word",
     "store": {},
-    "modes": [],
-    "usageCount": 24,
+    "modes": [
+        1
+    ],
+    "usageCount": 29,
     "prompt": false,
     "omitTrigger": false,
     "showInTrayMenu": false,
     "abbreviation": {
-        "abbreviations": [],
+        "abbreviations": [
+            "add-word"
+        ],
         "backspace": true,
         "ignoreCase": false,
         "immediate": false,
