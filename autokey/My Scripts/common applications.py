@@ -5,7 +5,7 @@ from autokey.common import USING_QT
 # 定义可选择的程序
 choices = [
     ["firefox", "firefox"],
-   ["emacs", "emacs"],
+   ["emacs", "emacsclient -c"],
  #["qutebrowser", "/home/xinyu/application/qutebrowser/.venv/bin/python3 -m qutebrowser \"$@\""],
  ["qutebrowser", "qutebrowser"],
     ["autokey", "autokey"],

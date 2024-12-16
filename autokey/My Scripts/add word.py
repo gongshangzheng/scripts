@@ -5,7 +5,7 @@ if retCode == 1:
 retCode, code = dialog.input_dialog(title="code", message="Enter the code")
 if retCode == 1:
     exit()
-# 定义文件路径
+# 定义文件路径cd
 file_path = '/home/xinyu/.config/ibus/rime/wubi86_jidian_user.dict.yaml'
 
 # 将结果附加写入文件

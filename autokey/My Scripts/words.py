@@ -4,7 +4,9 @@ from autokey.common import USING_QT
 # you goto that are just ips, w/e the reason this works too.
 ipaddresses = [["Name", "IP Address"]]
 ipaddresses.append(["local",  "127.0.0.1"])
-ipaddresses.append(["ionos",  "http://87.106.191.101", "default"])
+ipaddresses.append(["ionos",  "http://87.106.191.101"])
+ipaddresses.append(["OpenAI Key", "sk-Jlqw3VNRB6cRbEbGRgvqCHgvS9c4K9jU8J1b6gCoit7EHEJ3"])
+ipaddresses.append(["ChatAnyWhere Base URL", "https://api.chatanywhere.org"])
 ipaddresses.append(["aws",  ""])
 # clearly mom needs lots of remote work and nobody goes near john's filth can
 
@@ -28,5 +30,5 @@ else:
 if retCode == 0:
     selection="{}"
     keyboard.send_keys(selection.format(
-    choice
+    choice.split("|")[-1]
     ))

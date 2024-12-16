@@ -1,0 +1,1 @@
+~/scripts/utils/assets/qutebrowser-config.py

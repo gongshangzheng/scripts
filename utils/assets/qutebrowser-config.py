@@ -19,6 +19,9 @@ for more settings check out
 https://qutebrowser.org/doc/help/settings.html
 """
 
+editor_value = "emacsclient" # or "gvim"
+browser_value = "qutebrowser"
+
 # ================== Youtube Add Blocking ======================= {{{
 def filter_yt(info: interceptor.Request):
     """Block the given request if necessary."""
@@ -77,9 +80,11 @@ esac
 config.bind("<y><o>", "yank inline [[{url}][{title}]]")
 # }}}
 # ====================== Open Notes From Qutebrowser ====== {{{
+
+    #``os.environ["TERMINAL"] + " -e " +
 notecmd = "yank inline [[{url}][{title}]];; spawn " +\
-        os.environ["TERMINAL"] + " -e " + os.environ["EDITOR"] + \
-        " -c 'call CreateCapture(\"e\" , \"qutebrowser\")'"
+editor_value + \
+    " -c 'call CreateCapture(\"e\" , \"qutebrowser\")'"
 config.bind("gn", notecmd)
 
 
@@ -107,16 +112,16 @@ SCHEDULED: <{{+~strftime(g:org_date_format)+}}>
 """
 # }}}
 # ======================= External Open =================== {{{
-config.bind("V", "hint links spawn " + os.environ["BROWSER"] + ' "{hint-url}"')
+config.bind("V", "hint links spawn " + browser_value + ' "{hint-url}"')
 config.bind("v", 'hint links spawn funnel "{hint-url}"')
 config.bind("\\", 'spawn dmenuhandler "{url}"')
 # }}}
 # ======================= Redline Insert Mode ============= {{{
 # Awesome way to open vim from qutebrowser
+#
+# editor_value,
 c.editor.command = [
-    os.environ["TERMINAL"],
-    "-e",
-    os.environ["EDITOR"],
+    "gvim",
     "-f",
     "{file}",
     "-c",
@@ -137,7 +142,7 @@ config.bind("<Ctrl-d>", "fake-key <Delete>", "insert")
 config.bind("<Ctrl-w>", "fake-key <Ctrl-Backspace>", "insert")
 config.bind("<Ctrl-u>", "fake-key <Shift-Home><Delete>", "insert")
 config.bind("<Ctrl-k>", "fake-key <Shift-End><Delete>", "insert")
-config.bind("<Ctrl-x><Ctrl-e>", "open-editor", "insert")
+config.bind("<Ctrl-x><Ctrl-e>", "config-edit")
 # }}}
 # ====================== xresources ======================= {{{
 # taken from https://qutebrowser.org/doc/help/configuring.html

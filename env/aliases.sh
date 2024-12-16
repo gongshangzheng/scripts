@@ -28,7 +28,7 @@ alias gc="git commit"
 
 # export
 export HISTCONTROL=ignoreboth #忽略重复命令
-export EDITOR="emacsclient -c"
+export EDITOR="emacsclient"
 export TERMINAL="alacritty"
 export BROWSER=qutebrowser
 
