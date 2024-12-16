@@ -19,13 +19,13 @@ api.cmap('<Ctrl-p>', '<Shift-Tab>');
 
 api.imap(',,', "<Esc>");        // 按两次逗号退出当前输入框。
 api.imap(';;', "<Ctrl-'>");     // 按两次分号切换双引号。
-api.mapkey('<Space>', 'Choose a tab with omnibar', function() {
-    api.Front.openOmnibar({type: "Tabs"});
-});
 
 /////////////////////////////////////////////
 // mapkeys
 /////////////////////////////////////////////
+api.mapkey('<Space>', 'Choose a tab with omnibar', function() {
+    api.Front.openOmnibar({type: "Tabs"});
+});
 
 api.mapkey("<Space>", "pause/resume on youtube", function() {
     var btn = document.querySelector("button.ytp-ad-overlay-close-button") || document.querySelector("button.ytp-ad-skip-button") || document.querySelector('ytd-watch-flexy button.ytp-play-button');

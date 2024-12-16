@@ -1,0 +1,7 @@
+#+title: Readme
+
+* 介绍
+
+用于进入各个常用文件夹。
+
+[[file:./][autoKey]] [[file:~/.config/ibus/rime/wubi86_jidian.dict.yaml][主词典]]

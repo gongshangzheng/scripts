@@ -1,0 +1,27 @@
+{
+    "type": "folder",
+    "title": "My Scripts",
+    "modes": [
+        1
+    ],
+    "usageCount": 9,
+    "showInTrayMenu": false,
+    "abbreviation": {
+        "abbreviations": [
+            "<<s"
+        ],
+        "backspace": true,
+        "ignoreCase": false,
+        "immediate": false,
+        "triggerInside": false,
+        "wordChars": "[\\w]"
+    },
+    "hotkey": {
+        "modifiers": [],
+        "hotKey": null
+    },
+    "filter": {
+        "regex": null,
+        "isRecursive": false
+    }
+}
