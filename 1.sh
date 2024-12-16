@@ -84,11 +84,12 @@ connect_to_server_aws(){
 
 surfingkeyChangeConfiguration(){
     cd ~/application/surfingkeys-conf/
+    npm use 22.11.0
     npm run gulp install
     cp ~/.config/surfingkeys.js ~/scripts/
     #append surfingkeys_custom.js to the end of surfingkeys.js
     #cat ~/scripts/surfingkeys_custom.js >> ~/scripts/surfingkeys.js
-    cd ~/scripts
+    cd ~/scripts/
     git add surfingkeys.js
     # get a new parameter as the commit message
     read -p "Enter the commit message: " commit_message

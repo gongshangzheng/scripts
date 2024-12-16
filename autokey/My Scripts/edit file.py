@@ -62,7 +62,7 @@ if USING_QT:
 else:
     retCode, choice = mydialog.list_menu(files, default=defEntry, height='800', width='500')
 # 设置编辑器变量
-editor = "emacsclient -c"  # 或者设置为 "emacs"
+editor = "emacsclient -c"  # 或者设置为 "gvim"
 if "emacsclient -c" == editor:
     main()
 # 执行选择的命令
