@@ -39,6 +39,6 @@
     cyan = "0xa1efe4"
     white = "0xffffff"
 
-[terminal.shell]
-  program = "/bin/zsh"  # 或者 "/bin/zsh"
-  args = ["--login"]
+# [terminal.shell]
+#  program = "/usr/bin/zsh"  # 或者 "/bin/zsh"
+#  args = ["--login"]

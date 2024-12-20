@@ -3,7 +3,7 @@
 # 1. [[https://www.xquartz.org/][XQuartz]]安装XQartz,一个MacOS下的X11
 # if it's in macos
 if [[ "$(uname)" == "Darwin" ]]; then
-    cd ~/Applications/
+    cd $APPLICATION_DIR
     git clone https://git.suckless.org/dmenu
     cd dmenu
     vim config.mk #修改必要的参数

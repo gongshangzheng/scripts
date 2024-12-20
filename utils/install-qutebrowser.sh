@@ -44,7 +44,7 @@ SOURCE="$HOME/scripts/utils/assets/qutebrowser-config.py"
 TARGET="$HOME/.config/qutebrowser/config.py"
 
 # 创建目标目录（如果不存在）
-sudo mkdir -p "$(dirname "$TARGET")"
+mkdir -p "$(dirname "$TARGET")"
 
 # 检查目标文件是否已经存在，如果存在则删除
 if [ -L "$TARGET" ] || [ -e "$TARGET" ]; then
@@ -52,7 +52,7 @@ if [ -L "$TARGET" ] || [ -e "$TARGET" ]; then
 fi
 
 # 创建软链接
-sudo ln -s "$SOURCE" "$TARGET"
+ln -s "$SOURCE" "$TARGET"
 if [ $? -eq 0 ]; then
     echo "Successfully created symlink: $SOURCE -> $TARGET"
 else

@@ -1,13 +1,12 @@
 #!/usr/bin/env sh
 #
-rm ~/.Xmodmap
-sudo rm
-ln -s /home/xinyu/scripts/utils/assets/.Xmodmap ~/.Xmodmap
-xmodmap ~/.Xmodmap
+rm $HOME/.Xmodmap
+ln -s $HOME/scripts/utils/assets/.Xmodmap $HOME/.Xmodmap
+xmodmap $HOME/.Xmodmap
 
 ######### keyd
 
-REPO_URL="git@github.com:rvaiya/keyd.git"
+REPO_URL="https://github.com/rvaiya/keyd.git"
 TARGET_DIRECTORY="$HOME/application/keyd/"
 if [ -d "$TARGET_DIRECTORY" ]; then
     echo "目标目录 '$TARGET_DIRECTORY' 已存在，跳过克隆。"
@@ -15,14 +14,18 @@ else
     git clone "$REPO_URL" "$TARGET_DIRECTORY"
     cd $TARGET_DIRECTORY
     sudo systemctl enable keyd && sudo systemctl start keyd
-    ln -s /usr/local/share/keyd/keyd.compose ~/.XCompose
+    if [ ! -e "$HOME/.XCompose" ]; then
+	ln -s /usr/local/share/keyd/keyd.compose $HOME/.XCompose
+    fi
     sudo usermod -aG keyd xinyu
 fi
 
 cd $TARGET_DIRECTORY
-make && sudo make install
+echo "Begining make ..."
+make && sudo make install || exit 0
+sudo systemctl enable --now keyd
 sudo rm /etc/keyd/default.conf
-sudo ln -s /home/xinyu/scripts/utils/assets/default.conf /etc/keyd/default.conf
+sudo ln -s $HOME/scripts/utils/assets/default.conf /etc/keyd/default.conf
 sudo keyd reload
 
 
@@ -30,30 +33,30 @@ sudo keyd reload
 
 # 检查是否传入参数
 # read -p "Do you want to download the keyd extension ? (y/n): " answer
-answer="n"
-
-if [[ "$answer" == "y" || "$answer" == "Y" ]]; then
-    # 删除旧的扩展
-    rm -r ~/.local/share/gnome-shell/extensions/keyd
-    # 创建目录
-    mkdir -p ~/.local/share/gnome-shell/extensions
-    # 创建符号链接
-    sudo ln -s /usr/local/share/keyd/gnome-extension-45 ~/.local/share/gnome-shell/extensions/keyd
-    # 启用扩展
-
-    echo "Keyd extension installed and enabled."
-else
-    echo "No action taken. Use 'y' as an argument to install the keyd extension."
-fi
-gnome-extensions enable keyd
-sudo bash -c 'cat << EOF | tee /home/xinyu/.config/keyd/app.conf > /dev/null
-[chromium]
-
-alt.[ = C-S-tab
-alt.] = macro(C-tab)
-
-EOF'
-keyd-application-mapper
+# answer="n"
+#
+# if [[ "$answer" == "y" || "$answer" == "Y" ]]; then
+#     # 删除旧的扩展
+#     rm -r $HOME/.local/share/gnome-shell/extensions/keyd
+#     # 创建目录
+#     mkdir -p $HOME/.local/share/gnome-shell/extensions
+#     # 创建符号链接
+#     sudo ln -s /usr/local/share/keyd/gnome-extension-45 $HOME/.local/share/gnome-shell/extensions/keyd
+#     # 启用扩展
+#
+#     echo "Keyd extension installed and enabled."
+# else
+#     echo "No action taken. Use 'y' as an argument to install the keyd extension."
+# fi
+# gnome-extensions enable keyd
+# sudo bash -c 'cat << EOF | tee /home/xinyu/.config/keyd/app.conf > /dev/null
+# [chromium]
+#
+# alt.[ = C-S-tab
+# alt.] = macro(C-tab)
+#
+# EOF'
+# keyd-application-mapper
 
 : <<'END_COMMENT'
 
