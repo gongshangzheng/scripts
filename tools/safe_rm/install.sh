@@ -2,16 +2,15 @@
 # ================================================================
 #   Copyright (C) 2024 www.361way.com site All rights reserved.
 #
-#   Filename      ：root_it.sh
+#   Filename      ：install.sh
 #   Author        ：yangbk <itybku@139.com>
-#   Create Time   ：2024-11-25 03:37
+#   Create Time   ：2024-12-20 20:51
 #   Description   ：
 # ================================================================
 
-#recursively find all file with extension.md in this folder, put them in the dir .
-# write it to a function and run the function in the end.
+parent_dir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd -P )
 
+cd $parent_dir
 
-find . -name "*.md" -exec mv {} . \;
-
-
+chmod 755 rm.sh
+ln -s $parent_dir/rm.sh /usr/local/bin/safe-rm
