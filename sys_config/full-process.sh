@@ -3,6 +3,7 @@
 parent_path=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
 cd "$parent_path"
 bash ./basic-environment.sh
+bash ./useful-tools.sh
 
 read -p "Do you want to install vim ?(y|[n]):" install_vim
 
@@ -46,11 +47,18 @@ if [ "$install_doom_emacs" == "y" ]; then
 bash ./doom-emacs-install.sh
 fi
 
+read -p "Do you want to install rime ?(y|[n]):" install_rime
+
+if [ "$install_rime" == "y" ]; then
+    bash ./rime-install.sh
+fi
+
 read -p "Have You already put the ssh key on git ?(y|[n]):" put_ssh_key
 
 if [ "$put_ssh_key" == "y" ]; then
     bash  ./git-repositories.sh
 fi
+
 
 cd $HOME/MyConf
 

@@ -8,11 +8,15 @@
 #   Description   ：
 # ================================================================
 # /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-sudo port install macvim
 
-if [ -e "/usr/local/bin/gvim" ]; then
-    sudo rm /usr/local/bin/gvim
+if [ $(uname -s) == "Darwin" ]; then
+    sudo port install macvim
+
+    if [ -e "/usr/local/bin/gvim" ]; then
+        sudo rm /usr/local/bin/gvim
+    fi
+
+    sudo ln -s /Applications/MacVim.app/Contents/bin/gvim /usr/bin/gvim
+elif [ $(uname -s) == "Linux" ]; then
+    sudo apt-get install vim-gtk3
 fi
-
-sudo ln -s /Applications/MacVim.app/Contents/bin/gvim /usr/bin/gvim
-

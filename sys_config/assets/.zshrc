@@ -124,10 +124,11 @@ alias trm="bash ~/scripts/utils/tsh.sh"
 alias tsh="bash ~/scripts/utils/tsh.sh"
 export APPLICATION_DIR="$HOME/application"
 alias rm="bash ~/scripts/tools/safe_rm/rm.sh"
+alias sgpt="/home/xinyu/scripts/py-scripts/my/bin/python -m sgpt"
 alias ml="bash ~/scripts/tools/ml.sh"
 #export hypermenu="~/scripts/dmenu/hypermenu/hypermenu"
 export BROWSER="qutebrowser"
-export EDITOR="emacsclient"
+export EDITOR="vim"
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
