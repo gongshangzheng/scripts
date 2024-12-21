@@ -11,11 +11,22 @@ LAUNCHER="dmenu -l 5 -i -p "
 [ -z "${DISPLAY}" ] && LAUNCHER="fzf --prompt "
 
 declare -A commands
-commands["emacs"]="emacsclient -c"
-commands["alacritty"]="alacritty"
 commands["qutebrowser"]="qutebrowser"
-commands["run commands"]="/home/xinyu/scripts/dmenu/run_commands.sh"
-printf '%s\n' "${commands[@]}"
+commands["emacs"]="emacsclient -c"
+commands["run commands"]="bash /home/xinyu/scripts/dmenu/run_commands.sh"
+commands["alacritty"]="alacritty"
 
-choice=$(printf '%s\n' "${commands[@]}" | sort | $LAUNCHER "Commands:") || exit 1
-eval "${commands[$choice]}"
+# Create a string to display key | value pairs
+command_list=""
+for key in "${!commands[@]}"; do
+    command_list+="$key | ${commands[$key]}\n"
+done
+
+# Show the key | value list in the launcher
+choice=$(echo -e "$command_list" | $LAUNCHER "Commands:") || exit 1
+
+# Extract the key (before the first " | ") from the selected choice
+selected_command=$(echo "$choice" | cut -d'|' -f2)
+#printf "Selected command: %s\n" "$selected_command"
+# Execute the corresponding command
+eval "$selected_command"
