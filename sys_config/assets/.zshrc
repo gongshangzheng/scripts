@@ -111,7 +111,7 @@ source ~/scripts/env/aliases.sh
 ZSH_THEME="powerlevel10k/powerlevel10k"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-source /home/xinyu/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+#source /home/xinyu/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 alias e-bspwm="vim ~/.config/bspwm/bspwmrc" 
 alias e-sxhkd="vim ~/.config/sxhkd/sxhkdrc" 
 alias e-polybar="vim ~/.config/polybar/config.ini" 
@@ -122,7 +122,15 @@ alias e-dict="vim ~/.config/ibus/rime/wubi86_jidian.dict.yaml"
 alias srm="bash ~/scripts/utils/tsh.sh --dest \"~/archive\""
 alias trm="bash ~/scripts/utils/tsh.sh"
 alias tsh="bash ~/scripts/utils/tsh.sh"
-alias rm="~/scripts/tools/safe_rm/rm.sh"
+export APPLICATION_DIR="$HOME/application"
+alias rm="bash ~/scripts/tools/safe_rm/rm.sh"
+alias ml="bash ~/scripts/tools/ml.sh"
 #export hypermenu="~/scripts/dmenu/hypermenu/hypermenu"
 export BROWSER="qutebrowser"
 export EDITOR="emacsclient"
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+

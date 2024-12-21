@@ -24,10 +24,12 @@ git config --global user.email "$git_email"
 git config --global merge.tool vimdiff
 git config --global core.editor "vim"
 
-echo "ssh-key configuration..."
-
-ssh-keygen -t rsa -b 4096 -C "$git_email"
-
-echo "Finished!"
+if [ ! -d "$HOME/.ssh" ]; then
+    echo "ssh-key configuration..."
+    ssh-keygen -t rsa -b 4096 -C "$git_email"
+    echo "Finished!"
+fi
 
 cat $HOME/.ssh/id_rsa.pub
+
+echo "Please put this key to github"

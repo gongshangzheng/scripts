@@ -12,7 +12,7 @@ set -x
 # 检查当前操作系统是否是 macOS
 if [[ "$(uname)" == "Darwin" ]]; then
 
-    sudo ln -s /Applications/qutebrowser.app/Contents/MacOS/qutebrowser /usr/local/bin/qutebrowser
+    sudo ln /Applications/qutebrowser.app/Contents/MacOS/qutebrowser /usr/local/bin/qutebrowser
     # 定义源文件和目标文件路径
     SOURCE="$HOME/scripts/utils/assets/qutebrowser-autoconfig.yml"
     TARGET="$HOME/Library/Preferences/qutebrowser/autoconfig.yml"
@@ -26,7 +26,7 @@ if [[ "$(uname)" == "Darwin" ]]; then
     fi
 
     # 创建软链接
-    sudo ln -s "$SOURCE" "$TARGET"
+    sudo ln "$SOURCE" "$TARGET"
     echo "Successfully created symlink: $SOURCE -> $TARGET"
 elif [[ "$(uname)" == "Linux" ]]; then
     # 判断是否已经安装了 qutebrowser
@@ -53,7 +53,7 @@ if [ -L "$TARGET" ] || [ -e "$TARGET" ]; then
 fi
 
 # 创建软链接
-ln -s "$SOURCE" "$TARGET"
+ln "$SOURCE" "$TARGET"
 if [ $? -eq 0 ]; then
     echo "Successfully created symlink: $SOURCE -> $TARGET"
 else

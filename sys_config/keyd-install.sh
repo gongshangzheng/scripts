@@ -2,7 +2,7 @@
 #
 parent_path=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
 rm $HOME/.Xmodmap
-ln -s $parent_path/assets/.Xmodmap $HOME/.Xmodmap
+ln $parent_path/assets/.Xmodmap $HOME/.Xmodmap
 xmodmap $HOME/.Xmodmap
 
 ######### keyd
@@ -16,7 +16,7 @@ else
     cd $TARGET_DIRECTORY
     sudo systemctl enable keyd && sudo systemctl start keyd
     if [ ! -e "$HOME/.XCompose" ]; then
-	ln -s /usr/local/share/keyd/keyd.compose $HOME/.XCompose
+	ln /usr/local/share/keyd/keyd.compose $HOME/.XCompose
     fi
     sudo usermod -aG keyd $USER
 fi
@@ -28,7 +28,7 @@ sudo systemctl enable --now keyd
 sudo rm /etc/keyd/default.conf
 
 
-sudo ln -s $parent_path/assets/default.conf /etc/keyd/default.conf
+sudo ln $parent_path/assets/default.conf /etc/keyd/default.conf
 sudo keyd reload
 
 
@@ -44,7 +44,7 @@ sudo keyd reload
 #     # 创建目录
 #     mkdir -p $HOME/.local/share/gnome-shell/extensions
 #     # 创建符号链接
-#     sudo ln -s /usr/local/share/keyd/gnome-extension-45 $HOME/.local/share/gnome-shell/extensions/keyd
+#     sudo ln /usr/local/share/keyd/gnome-extension-45 $HOME/.local/share/gnome-shell/extensions/keyd
 #     # 启用扩展
 #
 #     echo "Keyd extension installed and enabled."

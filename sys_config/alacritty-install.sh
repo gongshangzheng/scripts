@@ -40,7 +40,7 @@ if [ -L "$TARGET" ] || [ -e "$TARGET" ]; then
 fi
 
 # 创建软链接
-ln -s "$SOURCE" "$TARGET"
+ln "$SOURCE" "$TARGET"
 if [ $? -eq 0 ]; then
     echo "Successfully created symlink: $SOURCE -> $TARGET"
 else

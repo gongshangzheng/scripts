@@ -204,10 +204,10 @@ c.colors.completion.category.fg = xresources.get("*.foreground", default_foregro
 c.colors.completion.item.selected.bg = xresources.get("*.background", default_background)
 c.colors.completion.item.selected.fg = xresources.get("*.foreground", default_foreground)
 
-# Fallback for background color
+# # Fallback for background color
 default_background = "#282a36"  # Replace with your desired fallback color
 
-# Get the background color, using the fallback if necessary
+# # Get the background color, using the fallback if necessary
 background_color = xresources.get("*.background", default_background)
 
 # If not in light theme
@@ -227,3 +227,40 @@ if background_color != "#ffffff":
 #   - I have been looking at using catt instead of castnow
 
 # }}}
+
+# Load existing settings made via :set
+config.load_autoconfig()
+
+# dracula.draw.blood(c, {
+    # 'spacing': {
+        # 'vertical': 6,
+        # 'horizontal': 8
+    # }
+# })
+
+# config.source('qutebrowser-themes/onedark/onedark.py')
+import catppuccin
+
+# load your autoconfig, use this, if the rest of your config is empty!
+config.load_autoconfig()
+
+# set the flavor you'd like to use
+# valid options are 'mocha', 'macchiato', 'frappe', and 'latte'
+# last argument (optional, default is False): enable the plain look for the menu rows
+catppuccin.setup(c, 'frappe', True)
+
+import os
+from urllib.request import urlopen
+
+# load your autoconfig, use this, if the rest of your config is empty!
+config.load_autoconfig()
+
+if not os.path.exists(config.configdir / "theme.py"):
+    theme = "https://raw.githubusercontent.com/catppuccin/qutebrowser/main/setup.py"
+    with urlopen(theme) as themehtml:
+        with open(config.configdir / "theme.py", "a") as file:
+            file.writelines(themehtml.read().decode("utf-8"))
+
+if os.path.exists(config.configdir / "theme.py"):
+    import theme
+    theme.setup(c, 'frappe', True)

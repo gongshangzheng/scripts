@@ -12,8 +12,8 @@ localBROWSER="$BROWSER "
 [ -n "$*" ] && localBROWSER="$*"
 [ -z "${DISPLAY}" ] && localBROWSER="w3m "
 
-if [ -f ~/.config/bookmarks ]; then
-	choice=$( (echo "🦆" && cat ~/.config/bookmarks) | $LAUNCER"Search:") || exit 1
+if [ -f $HOME/.config/qutebrowser/bookmarks/urls ]; then
+	choice=$( (echo "🦆" && cat $HOME/.config/qutebrowser/bookmarks/urls) | $LAUNCER"Search:") || exit 1
 else
 	choice=$(echo "🦆" | $LAUNCER -i -p "Search DuckDuckGo:") || exit 1
 fi
