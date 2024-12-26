@@ -15,7 +15,7 @@ super + d
     rofi -show drun -show-icons
 
 super + q
-	/home/xinyu/scripts/py_scripts/.venv/bin/python3 -m qutebrowser &
+	/home/xinyu/application/qutebrowser/.venv/bin/python3 -m qutebrowser &
 super + v
     copyq show
 # make sxhkd reload its configuration files:

@@ -14,6 +14,7 @@ EDITOR="emacsclient -c"
 declare -A files
 files["user dict"]="$HOME/.config/ibus/rime/wubi86_jidian_user.dict.yaml"
 files["default dict"]="$HOME/.config/ibus/rime/wubi86_jidian.dict.yaml"
+files["emacs config"]="$HOME/.doom.d/my_config.org"
 
 # Create a string to display key | value pairs
 file_list=""

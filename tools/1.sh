@@ -179,7 +179,7 @@ case "$1" in
         markdown_org
         ;;
     halt)
-        . 1 pa || return 1
+        bash $HOME/scripts/tools/1.sh pa || return 1
         sudo shutdown -h now || return 1
         ;;
     reboot)
@@ -187,7 +187,7 @@ case "$1" in
         ;;
 
     begin)
-        . 1 pla || return 1
+        bash $HOME/scripts/tools/1.sh pla || return 1
         ;;
      -s|modify-script)
         echo "Modifying script..."
