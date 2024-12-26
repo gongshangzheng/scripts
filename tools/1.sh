@@ -266,7 +266,7 @@ case "$1" in
         bash $HOME/scripts/tools/1.sh  push-rime || return 1
         bash $HOME/scripts/tools/1.sh  push-doom || return 1
         bash $HOME/scripts/tools/1.sh  push-scripts || return 1
-        bash $HOME/scripts/tools/1.sh  push-note || return 1
+        #bash $HOME/scripts/tools/1.sh  push-note || return 1
         bash $HOME/scripts/tools/1.sh  push-conf || return 1
         bash $HOME/scripts/tools/1.sh push-post || return 1
         ;;
@@ -278,7 +278,7 @@ case "$1" in
         bash $HOME/scripts/tools/1.sh vim || return 1
         bash $HOME/scripts/tools/1.sh blog || return 1
         bash $HOME/scripts/tools/1.sh conf || return 1
-        bash $HOME/scripts/tools/1.sh note || return 1
+        #bash $HOME/scripts/tools/1.sh note || return 1
         ;;
     rime|-r)
         # Detect the Rime directory based on OS
