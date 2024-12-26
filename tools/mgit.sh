@@ -23,10 +23,14 @@ help() {
   echo "  help, -h         Show this help message"
   echo "  rcache, rc       remove cache"
   echo "  init             Create a symbolic link in /usr/local/bin pointing to this script"
+  echo "  rm           Remove a file from Git tracking"
   echo "  clean            Run 'git gc --prune=now --aggressive' to clean the repository"
   echo "  -s               modify the script"
 }
 
+rm() {
+    git filter-branch --tree-filter 'rm -rf $2' HEAD
+}
 # 定义 init 函数
 init() {
   if [ -f /usr/local/bin/mgit ]; then
@@ -78,6 +82,9 @@ case "$1" in
     ;;
   clean)
     clean
+    ;;
+  rm)
+    rm "$@"
     ;;
   -s)
     vim "$SCRIPT_PATH"
