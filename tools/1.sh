@@ -19,7 +19,6 @@ show_help() {
     echo "Usage: $0 [command]"
     echo ""
     echo "Commands:"
-    echo "  init                   Initialize the script by creating a symbolic link in /usr/local/bin/1."
     echo "  ====================================================="
     echo "  begin                  Begin the system."
     echo "  halt                   Halt the system."
@@ -28,6 +27,7 @@ show_help() {
     echo "  -h, help               Show this help message."
     echo "  -s, modify-script      Modify the script (opens vim for editing)."
     echo "  -n, novel              Update the novel directory from git."
+    echo "  conf                   Update the conf directory from git."
     echo "  -b, blog               Update the blog directory from git."
     echo "  -c, code               Update the code directory from git."
     echo "  -r, rime                   Update the rime directory from git."
@@ -121,51 +121,6 @@ pull_git_directory(){
     git pull origin master || return 1
 }
 
-init_system(){
-
-    if [[ "$(uname)" == "Darwin" ]]; then
-        # macOS
-        sudo softwareupdate -i -a || return 1
-        # homebrew
-        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"|| return 1
-        # git
-        brew install git || return 1
-        # vim
-        brew install vim || return 1
-        # required dependencies
-        brew install git ripgrep || return 1
-        # optional dependencies
-        brew install coreutils fd || return 1
-        # Installs clang
-        xcode-select --install || return 1
-        # emacs
-        brew --cask install emacs || return 1
-        # alfred
-        brew install --cask alfred || return 1
-    elif [[ "$(uname)" == "Linux" ]]; then
-        # Linux
-        sudo apt update || return 1
-        sudo apt upgrade || return 1
-        sudo apt install -y git || return 1
-        sudo apt install -y vim || return 1
-        sudo apt install -y fish || return 1
-        sudo apt install -y python3 || return 1
-        sudo apt install -y python3-pip || return 1
-        sudo apt install -y python3-venv || return 1
-        #sudo apt install -y nodejs || return 1
-        #sudo apt install -y npm || return 1
-        #sudo apt install -y hugo || return 1
-        #sudo apt install -y cmake || return 1
-        #emacs
-        snap install emacs --classic || return 1
-        sudo apt-get install ripgrep fd-find || return 1
-    fi
-    git clone https://github.com/hlissner/doom-emacs ~/.emacs.d || return 1
-    ~/.emacs.d/bin/doom install || return 1
-    git config --global core.quotepath false || return 1
-    git config merge.tool vimdiff || return 1
-}
-
 markdown_org(){
     # 定义路径
     ORG_DIR="$HOME/.doom.d/org/novel"
@@ -209,6 +164,7 @@ done
 echo "所有转换已完成。"
 }
 # If no argument is provided, show help
+
 if [ -z "$1" ]; then
     show_help
     return 1
@@ -219,47 +175,23 @@ case "$1" in
     -h|help)
         show_help
         ;;
-    init)
-        script_path=$(realpath "$0") || return 1
-        #if [ -L "/usr/local/bin/1" ]; then
-        #echo "The script is already initialized."
-        #exit 0
-        #fi
-        if [ -f "/usr/local/bin/1" ]; then
-            # delete it
-            printf "%s" "Do you want to delete it? (y/n)"
-            read -r response
-            if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
-                sudo rm /usr/local/bin/1
-            else
-                echo "The script is not initialized."
-                exit 0
-            fi
-        fi
-        sudo ln -s "$script_path" /usr/local/bin/1
-        echo "The script has been initialized."
-        ;;
     markdown-org)
         markdown_org
         ;;
     halt)
-        . 1 pla || return 1
         . 1 pa || return 1
         sudo shutdown -h now || return 1
         ;;
     reboot)
-        . 1 pla || return 1
-        . 1 pa || return 1
         sudo reboot -h now || return 1
         ;;
 
     begin)
         . 1 pla || return 1
-        . 1 pa || return 1
         ;;
      -s|modify-script)
         echo "Modifying script..."
-        vim /usr/local/bin/1
+        vim $HOME/scripts/tools/1.sh
         ;;
     -c|code)
         echo "This is your git file"
@@ -272,6 +204,9 @@ case "$1" in
         ;;
     -b|blog)
         pull_git_directory ~/blogs
+        ;;
+    conf)
+        pull_git_directory ~/MyConf
         ;;
     note)
         pull_git_directory ~/note
@@ -307,7 +242,9 @@ case "$1" in
     sd|show-dpkg)
 	dpkg-query -Wf '${Installed-Size}\t${Package}\n' | sort -n | tail -n 20
 	;;
-
+    conf)
+        push_git_directory ~/MyConf
+        ;;
     push-vim-config|pvc)
         push_git_directory ~/.vim_runtime
         ;;
@@ -324,24 +261,24 @@ case "$1" in
         push_git_directory ~/blogs/content/zh/posts
         ;;
     push-all|pa)
-        bash 1 push-vim-config || return 1
-        bash 1 push-blog || return 1
-        bash 1 push-rime || return 1
-        bash 1 push-doom || return 1
-        bash 1 push-scripts || return 1
-        bash 1 push-note || return 1
-        #bash 1 push-code || return 1
-        bash 1 push-post || return 1
+        bash $HOME/scripts/tools/1.sh push-vim-config || return 1
+        bash $HOME/scripts/tools/1.sh  push-blog || return 1
+        bash $HOME/scripts/tools/1.sh  push-rime || return 1
+        bash $HOME/scripts/tools/1.sh  push-doom || return 1
+        bash $HOME/scripts/tools/1.sh  push-scripts || return 1
+        bash $HOME/scripts/tools/1.sh  push-note || return 1
+        bash $HOME/scripts/tools/1.sh  push-conf || return 1
+        bash $HOME/scripts/tools/1.sh push-post || return 1
         ;;
     pull-all|pla)
-        bash 1 novel || return 1
-        bash 1 doom || return 1
-        bash 1 rime || return 1
-        bash 1 scripts || return 1
-        bash 1 vim || return 1
-        bash 1 blog || return 1
-        #bash 1 code || return 1
-        bash 1 note || return 1
+        bash $HOME/scripts/tools/1.sh novel || return 1
+        bash $HOME/scripts/tools/1.sh doom || return 1
+        bash $HOME/scripts/tools/1.sh rime || return 1
+        bash $HOME/scripts/tools/1.sh scripts || return 1
+        bash $HOME/scripts/tools/1.sh vim || return 1
+        bash $HOME/scripts/tools/1.sh blog || return 1
+        bash $HOME/scripts/tools/1.sh conf || return 1
+        bash $HOME/scripts/tools/1.sh note || return 1
         ;;
     rime|-r)
         # Detect the Rime directory based on OS
