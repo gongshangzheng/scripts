@@ -26,6 +26,9 @@ commands["logout"]="bspc quit"
 commands["shutdown"]="shutdown now"
 commands["screen shot"]="flameshot gui"
 commands["default windows"]="bash /home/xinyu/scripts/tools/open-default-windows.sh"
+commands["zotero"]="zotero"
+commands["thunar"]="thunar"
+commands["rime reload"]="ibus reload"
 
 # Create a string to display key | value pairs
 command_list=""

@@ -22,3 +22,9 @@ sudo dpkg -i fd_8.2.1_amd64.deb  # adapt version number and architecture
 git clone --depth 1 https://github.com/hlissner/doom-emacs $HOME/.emacs.d
 $HOME/.emacs.d/bin/doom install
 $HOME/.emacs.d/bin/doom sync
+sudo apt install librime-dev
+# org music
+sudo apt install mpv
+sudo wget https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -O /usr/local/bin/yt-dlp
+
+sudo apt install libtool

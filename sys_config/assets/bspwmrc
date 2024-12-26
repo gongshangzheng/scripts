@@ -7,11 +7,7 @@ bspc monitor HDMI-1-0 -d I II III IV V
 bspc monitor eDP-1 -d VI VII VIII IX X
 
 #lemonpanel &
-#bash ~/.config/polybar/launch.sh --hack &
-~/.config/polybar/hack/launch.sh &
-mpd &
-emacs --daemon &
-
+#~/.config/polybar/hack/launch.sh &
 bspc config border_width         2
 bspc config window_gap          12
 
@@ -30,17 +26,18 @@ if xrandr -q | grep "HDMI-1-0 connected"; then
     #alacritty &
 fi
 
-feh --bg-fill $HOME/Downloads/blue-sky/wallpapers/blue3.png
+feh --bg-fill -randomize $HOME/MyConf/wallpapers/*
+picom &
+bash ~/.config/polybar/launch.sh --hack &
 
 cd $HOME/.doom.d
 git add .
 git commit -m "update"
-git pull
-cd $HOME/blogs
+cd $HOME/MyConf
 git add .
 git commit -m "update"
-git pull
-cd $HOME/.config/ibus/rime
-git add .
-git commit -m "update"
-git pull
+
+sudo systemctl --user start mpd &
+emacs --daemon &
+syncthing &
+copyq &

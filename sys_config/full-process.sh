@@ -63,3 +63,4 @@ fi
 cd $HOME/MyConf
 
 bash $HOME/MyConf/config-env.sh all
+sudo apt install libev-dev

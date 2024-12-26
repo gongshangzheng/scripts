@@ -31,3 +31,4 @@ if [ "$input" == "y" ]; then
 else
     exit 0
 fi
+sudo apt install librime-dev

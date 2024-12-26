@@ -44,11 +44,6 @@ show_help() {
     echo "  sd, show-dpkg               Show the size of all dpkg packages."
     echo "  sk, sk-conf                change surfingkeys configuration."
     echo "  grep                   grep phrase."
-    echo "  server                  Connect to the server."
-    echo "  server2                Connect to the server2."
-    echo "  server-aws             Connect to the server-aws."
-    echo "  dict                   Add words to the custom dictionary."
-    echo "  dict2                   Add words to the dictionary."
     echo "  ====================================================="
     echo "  pla, pull-all               Pull all content from git."
     echo "  ====================================================="
@@ -67,21 +62,6 @@ show_help() {
     echo "PS: if you want to use -n, -b, -c, or note, you need to add . before the command."
 }
 
-connect_to_server(){
-    #ssh -i ~/.ssh/id_rsa gongshang@47.93.37.219
-    ssh -i ~/.ssh/id_rsa xinyu@47.93.27.152
-}
-
-connect_to_server2(){
-    #ssh -i ~/.ssh/id_rsa gongshang@47.93.37.219
-    # ssh-copy-id xinyu@87.106.191.101
-    ssh -i ~/.ssh/id_rsa xinyu@87.106.191.101
-}
-
-connect_to_server_aws(){
-    sudo ssh -i ~/Documents/configs/servers/AWS-EC2-key.pem ubuntu@16.171.150.115
-}
-
 surfingkeyChangeConfiguration(){
     cd ~/application/surfingkeys-conf/
     npm use 22.11.0
@@ -98,39 +78,6 @@ surfingkeyChangeConfiguration(){
     cd ~/application/surfingkeys-conf
     git add src
     git commit -m "$commit_message"
-}
-
-dict(){
-    echo "========================================================"
-    echo "Adding words to the custom dictionary..."
-    echo "========================================================"
-    # judge the operating system
-    if [[ "$(uname)" == "Darwin" ]]; then
-        # macOS
-        vim "$HOME/Library/Rime/wubi86_jidian.user.yaml"
-    elif [[ "$(uname)" == "Linux" ]]; then
-        # Linux
-        vim "$HOME/.config/ibus/rime/wubi86_jidian_user.dict.yaml"
-    else
-        echo "Unsupported operating system."
-        return 1
-    fi
-}
-dict2(){
-    echo "========================================================"
-    echo "Adding words to the dictionary..."
-    echo "========================================================"
-    # judge the operating system
-    if [[ "$(uname)" == "Darwin" ]]; then
-        # macOS
-        vim "$HOME/Library/Rime/wubi86_jidian.user.yaml"
-    elif [[ "$(uname)" == "Linux" ]]; then
-        # Linux
-        vim "$HOME/.config/ibus/rime/wubi86_jidian.dict.yaml"
-    else
-        echo "Unsupported operating system."
-        return 1
-    fi
 }
 
 grep_phrase(){
@@ -292,9 +239,6 @@ case "$1" in
         sudo ln -s "$script_path" /usr/local/bin/1
         echo "The script has been initialized."
         ;;
-    server-aws)
-        connect_to_server_aws
-        ;;
     markdown-org)
         markdown_org
         ;;
@@ -313,19 +257,7 @@ case "$1" in
         . 1 pla || return 1
         . 1 pa || return 1
         ;;
-    server)
-        connect_to_server
-        ;;
-    server2)
-        connect_to_server2
-        ;;
-    dict)
-        dict
-        ;;
-    dict2)
-        dict2
-        ;;
-    -s|modify-script)
+     -s|modify-script)
         echo "Modifying script..."
         vim /usr/local/bin/1
         ;;

@@ -11,7 +11,7 @@
   decorations = "full"
 
 [font]
-  normal = { family = "Agave Nerd Font", style = "Regular" }
+  normal = { family = "Maple Mono Normal NL NF CN", style = "Regular" }
   bold = { family = "Agave Nerd Font", style = "Bold" }
   italic = { family = "Agave Nerd Font", style = "Italic" }
   size = 14.0

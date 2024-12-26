@@ -11,17 +11,20 @@ super + g
 	bash hypermenu &
 	#dmenu_run
 
-super + q
-	qutebrowser
+super + d
+    rofi -show drun -show-icons
 
+super + q
+	/home/xinyu/scripts/py_scripts/.venv/bin/python3 -m qutebrowser &
+super + v
+    copyq show
 # make sxhkd reload its configuration files:
 
-super + space
-	ibus engine xkb:us::eng
+control + super + alt + shift + bracket{left,right}
+	ibus engine {xkb:us::eng,rime}
 
-super + shift + space
-	ibus engine rime
-
+control + super + alt + shift + backslash
+    ibus engine xkb:fr::fra
 #control + meta + alt + shift + {h,j,k,l,d,v,e}
     #xdotool key {Left,Down,Up,Right,BackSpace,Return,equal}
 #control + meta + alt + shift + bracket{left,right}
@@ -32,8 +35,12 @@ control + super + alt + shift + 1
 	bash $HOME/scripts/dmenu/run_commands.sh
 control + super + alt + shift + 2
 	bash $HOME/scripts/dmenu/list-qutebrowser-bookmarks.sh
-control + super + alt + shift + 3
-	source $HOME/scripts/dmenu/dbdb.sh
+control + super + alt + shift + w
+	bash $HOME/scripts/dmenu/words-completion.sh
+control + super + alt + shift + e
+    bash $HOME/scripts/dmenu/edit-file.sh
+control + super + alt + shift + t
+    bash /home/xinyu/scripts/dmenu/dofi
 # quit/restart bspwm
 super + alt + {q,r}
 	bspc {quit,wm -r}
@@ -135,3 +142,177 @@ super + alt + shift + {h,j,k,l}
 # move a floating window
 super + {Left,Down,Up,Right}
 	bspc node -v {-20 0,0 20,0 -20,20 0}
+
+################################################################################
+### Head: Application / Launch Rofi
+##
+
+alt + shift + d
+	rofi -show drun -show-icons
+
+alt + shift + w
+	rofi -show window -show-icons
+
+alt + shift + r
+	rofi -show run
+
+##
+### Tail: Application / Launch Rofi
+################################################################################
+
+################################################################################
+### Head: Volume / Control
+##
+
+## https://wiki.archlinux.org/index.php/Xbindkeys
+## https://wiki.archlinux.org/index.php/Advanced_Linux_Sound_Architecture#Keyboard_volume_control
+## https://wiki.archlinux.org/index.php/PulseAudio#Keyboard_volume_control
+## https://zh.wikipedia.org/zh-tw/ALSA
+## https://en.wikipedia.org/wiki/Advanced_Linux_Sound_Architecture
+## https://zh.wikipedia.org/zh-tw/PulseAudio
+## https://en.wikipedia.org/wiki/PulseAudio
+
+## alsamixer (Package: alsa-utils)
+## amixer (Package: alsa-utils)
+## pactl (Package: pulseaudio-utils)
+## pavucontrol (Package: pavucontrol)
+## pavucontrol-qt (Package: pavucontrol-qt)
+## mate-volume-control (Package: mate-media)
+
+
+## VolumeControl
+alt + shift + v
+	mate-volume-control
+	#pavucontrol
+	#pavucontrol-qt
+
+
+# https://askubuntu.com/questions/65764/how-do-i-toggle-sound-with-amixer
+# https://wiki.archlinux.org/index.php/PulseAudio#volume_control
+# amixer set Master toggle
+# amixer -D pulse set Master 1+ toggle
+# https://askubuntu.com/questions/872014/mute-button-doesnt-unmute
+
+## VolumeToggleMute
+alt + m
+	amixer -q -D pulse sset Master toggle
+
+## VolumeDecrease
+alt + shift + comma
+	amixer -q -D pulse sset Master 5%- unmute
+
+## VolumeIncrease
+alt + shift + period
+	amixer -q -D pulse sset Master 5%+ unmute
+
+## VolumeDecreaseSlowly
+alt + ctrl + comma
+	amixer -q -D pulse sset Master 1%- unmute
+
+## VolumeIncreaseSlowly
+alt + ctrl + period
+	amixer -q -D pulse sset Master 1%+ unmute
+
+
+## XF86Audio Key ##
+
+## VolumeToggleMute
+XF86AudioMute
+	amixer -q -D pulse sset Master toggle
+
+## VolumeDecrease
+XF86AudioLowerVolume
+	amixer -q -D pulse sset Master 5%- unmute
+
+## VolumeIncrease
+XF86AudioRaiseVolume
+	amixer -q -D pulse sset Master 5%+ unmute
+
+
+##
+## collision occurs on bash emacs mode
+## * `Alt + ,`
+## * `Alt + .`
+## * http://manpages.ubuntu.com/manpages/bionic/en/man3/readline.3readline.html#default%20key%20bindings
+## * http://manpages.ubuntu.com/manpages/bionic/en/man1/bash.1.html#readline
+##
+
+
+##
+### Tail: Volume / Control
+################################################################################
+
+################################################################################
+### Head: Wallpaper / Control
+##
+
+## Shuf
+alt + w
+	feh --bg-fill --randomize $HOME/MyConf/wallpapers
+
+## Default
+alt + ctrl + w
+	feh --bg-fill $HOME/MyConf/wallpapers/starry-night.png $HOME/MyConf/wallpapers/taiji.png
+
+##
+### Tail: Wallpaper / Control
+################################################################################
+
+################################################################################
+### Head: Monitor Brightness / Control
+##
+
+
+
+##
+## Monitor Brightness Control
+##
+##
+## * https://man.archlinux.org/man/community/brightnessctl/brightnessctl.1.en
+## * https://archlinux.org/packages/community/x86_64/brightnessctl/
+## * https://github.com/Hummer12007/brightnessctl
+##
+
+
+## Key_Brightness_Decrease
+XF86MonBrightnessDown
+	brightnessctl set 5%-
+
+## Key_Brightness_Increase
+XF86MonBrightnessUp
+	brightnessctl set +5%
+
+## Brightness_Decrease
+alt + shift + bracketleft
+	brightnessctl set 5%-
+
+## Brightness_Increase
+alt + shift + bracketright
+	brightnessctl set +5%
+
+## Brightness_Decrease_Slowly
+alt + ctrl + bracketleft
+	brightnessctl set 1%-
+
+## Brightness_Increase_Slowly
+alt + ctrl + bracketright
+	brightnessctl set +1%
+
+##
+### Tail: Monitor Brightness / Control
+################################################################################
+
+###############################################################################
+# Flameshot
+# https://github.com/flameshot-org/flameshot
+###############################################################################
+
+
+## Flameshot
+alt + s
+    flameshot gui
+
+
+##
+### Tail: Flameshot
+################################################################################

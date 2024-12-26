@@ -1,14 +1,4 @@
-#!/bin/bash
-# ================================================================
-#   Copyright (C) 2024 www.361way.com site All rights reserved.
-#
-#   Filename      ：useful-tools.sh
-#   Author        ：yangbk <itybku@139.com>
-#   Create Time   ：2024-12-21 10:37
-#   Description   ：
-# ================================================================
-
-sudo apt install w3m ddgr
-sudo apt-get install ibus-rime
-sudo apt-get install ibus
-sudo apt install python3-virtualenv
+sudo apt install duck fzf bat tldr zoxide eza
+curl -sS https://starship.rs/install.sh | sh
+sudo apt install fd-find
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh #install rust

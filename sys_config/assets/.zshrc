@@ -1,3 +1,10 @@
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:$PATH
 
@@ -74,7 +81,7 @@ plugins=(
         git
         z
         zsh-autosuggestions
-        #zsh-syntax-highlighting
+        zsh-syntax-highlighting
 )
 
 source $ZSH/oh-my-zsh.sh
@@ -107,31 +114,102 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-source ~/scripts/env/aliases.sh
 ZSH_THEME="powerlevel10k/powerlevel10k"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 #source /home/xinyu/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 alias e-bspwm="vim ~/.config/bspwm/bspwmrc" 
 alias e-sxhkd="vim ~/.config/sxhkd/sxhkdrc" 
-alias e-polybar="vim ~/.config/polybar/config.ini" 
+alias e-polybar="emacsclient -c ~/.config/polybar/hack"
+alias e-polybar-bar="vim ~/.config/polybar/hack/bar.ini" 
+alias e-polybar-config="vim ~/.config/polybar/hack/config.ini" 
+alias e-polybar-modules="vim ~/.config/polybar/hack/modules.ini" 
+alias e-polybar-custom-modules="vim ~/.config/polybar/hack/user_modules.ini"
+alias e-picom="vim ~/.config/picom/picom.conf"
 alias config-env="bash ~/MyConf/config-env.sh"
 alias e-keyd="vim ~/MyConf/keyd-default.conf"
-alias e-polybar="vim ~/MyConf/polybar/hack"
 alias e-dict="vim ~/.config/ibus/rime/wubi86_jidian.dict.yaml"
 alias srm="bash ~/scripts/utils/tsh.sh --dest \"~/archive\""
 alias trm="bash ~/scripts/utils/tsh.sh"
 alias tsh="bash ~/scripts/utils/tsh.sh"
 export APPLICATION_DIR="$HOME/application"
 alias rm="bash ~/scripts/tools/safe_rm/rm.sh"
-alias sgpt="/home/xinyu/scripts/py-scripts/my/bin/python -m sgpt"
+alias sgpt="/home/xinyu/scripts/py_scripts/.venv/bin/python -m sgpt"
 alias ml="bash ~/scripts/tools/ml.sh"
+alias gs="git status"
+alias ga="git add"
+alias gc="git commit"
+alias gp="git push"
+alias gd="git diff"
+alias gl="git log"
+alias gpl="git pull"
+alias gco="git checkout"
+alias gcb="git checkout -b"
+alias gb="git branch"
+alias gm="git merge"
+alias nim="nvim"
 #export hypermenu="~/scripts/dmenu/hypermenu/hypermenu"
 export BROWSER="qutebrowser"
-export EDITOR="vim"
+export EDITOR="nvim"
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
+ZSH_DISABLE_COMPFIX=true
+alias qutebrowser="bash ~/scripts/tools/open-qutebrowser.sh"
+alias umpv=~/scripts/tools/umpv
+source $ZSH/oh-my-zsh.sh
 
+
+# Starship 
+eval "$(starship init zsh)"
+# set Starship PATH
+export STARSHIP_CONFIG=$HOME/.config/starship/starship.toml
+
+# NOTE: Zoxide
+eval "$(zoxide init zsh)"
+
+# NOTE: FZF
+# Set up fzf key bindings and fuzzy completion
+#eval "$(fzf --zsh)"
+
+export FZF_DEFAULT_COMMAND="fd --hidden --strip-cwd-prefix --exclude .git "
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+export FZF_ALT_C_COMMAND="fd --type=d --hidden --strip-cwd-prefix --exclude .git"
+
+export FZF_DEFAULT_OPTS="--height 50% --layout=default --border --color=hl:#2dd4bf"
+
+# Setup fzf previews
+export FZF_CTRL_T_OPTS="--preview 'bat --color=always -n --line-range :500 {}'"
+export FZF_ALT_C_OPTS="--preview 'eza --icons=always --tree --color=always {} | head -200'"
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+# fzf 
+# called from ~/scripts/
+alias nlof="~/scripts/tools/fzf_listoldfiles.sh"
+# opens documentation through fzf (eg: git,zsh etc.)
+alias fman="compgen -c | fzf | xargs man"
+
+# zoxide (called from ~/scripts/)
+alias nzo="~/scripts/tools/zoxide_openfiles_nvim.sh"
+
+# Next level of an ls 
+# options :  --no-filesize --no-time --no-permissions 
+alias ls="eza --no-filesize --color=always --icons=always --no-user" 
+
+# tree
+alias tree="tree -L 3 -a -I '.git' --charset X "
+alias dtree="tree -L 3 -a -d -I '.git' --charset X "
+
+#yazi
+function y() {
+	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
+	yazi "$@" --cwd-file="$tmp"
+	if cwd="$(command cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
+		builtin cd -- "$cwd"
+	fi
+	rm -f -- "$tmp"
+}

@@ -30,13 +30,7 @@ if [[ "$(uname)" == "Darwin" ]]; then
     echo "Successfully created symlink: $SOURCE -> $TARGET"
 elif [[ "$(uname)" == "Linux" ]]; then
     # 判断是否已经安装了 qutebrowser
-    if command -v qutebrowser &> /dev/null
-    then
-        echo "qutebrowser is already installed."
-    else
-        # 安装 qutebrowser
-        sudo apt-get install qutebrowser
-    fi
+    if [ $APPLICATION_DIR -ne "" ];
 fi
 
 parent_path=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
@@ -59,3 +53,5 @@ if [ $? -eq 0 ]; then
 else
     echo "Failed to create symlink: $SOURCE -> $TARGET"
 fi
+wget https://raw.githubusercontent.com/adlered/CSDNGreener/refs/heads/master/csdngreener_openuserjs.user.js -O ~/.local/share/qutebrowser/greasemonkey/csdngreener_openuserjs.user.js
+wget 'https://greasyfork.org/scripts/9165-auto-close-youtube-ads/code/Auto%20Close%20YouTube%20Ads.user.js' -O ~/.local/share/qutebrowser/greasemonkey/yt-autoclose.js

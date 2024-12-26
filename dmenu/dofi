@@ -99,25 +99,26 @@ newitem () {
         else :
         fi
     fi
-    group=$(echo -e "< Cancel\n---\n$(grep -how '\+.*' *.todo | sort -u | sed 's/, /\n/g')" | _rofi -dmenu -p "> " -mesg "Enter Group or chose one below")
-    val=$?
-    if [[ $val -eq 1 ]]; then exit
-    else
-        if [[ $group == "< Cancel" ]]; then main
-        else :
-        fi
-    fi
-    tags=$(echo -e "< Cancel\nNOTAG\n$(grep -how '\@.*' *.todo | sed 's/, /\n/g' | sort -u)" | _rofi -dmenu -p "> " -mesg "Enter Tags (comma separated) or chose below (Use <span color='${title_color}'>Space+Enter</span> to multi-select)")
-    val=$?
-    if [[ $val -eq 1 ]]; then exit
-    else
-        if [[ $tags == "< Cancel" ]]; then main
-        elif [[ $tags == "NOTAG" ]]; then export tags=""
-        else :
-        fi
-
-    fi
-    tags=$(echo "$tags" | sed ':a;N;$!ba;s/\n/, /g' | sort | uniq)
+    #group=$(echo -e "< Cancel\n---\n$(grep -how '\+.*' *.todo | sort -u | sed 's/, /\n/g')" | _rofi -dmenu -p "> " -mesg "Enter Group or chose one below")
+    #val=$?
+    #if [[ $val -eq 1 ]]; then exit
+    #else
+        #if [[ $group == "< Cancel" ]]; then main
+        #else :
+        #fi
+    #fi
+    #tags=$(echo -e "< Cancel\nNOTAG\n$(grep -how '\@.*' *.todo | sed 's/, /\n/g' | sort -u)" | _rofi -dmenu -p "> " -mesg "Enter Tags (comma separated) or chose below (Use <span color='${title_color}'>Space+Enter</span> to multi-select)")
+    #val=$?
+    #if [[ $val -eq 1 ]]; then exit
+    #else
+        #if [[ $tags == "< Cancel" ]]; then main
+        #elif [[ $tags == "NOTAG" ]]; then export tags=""
+        #else :
+        #fi
+    #fi
+    #tags=$(echo "$tags" | sed ':a;N;$!ba;s/\n/, /g' | sort | uniq)
+    group=""
+    tags=""
     newfile=$(date +'%Y-%m-%d-%H%M%S'.todo)
     echo -e "123: --------\nabc: 3\ncaption: ${title}\ngroup: ${group}\ntags: ${tags}" >> "${notes}/${newfile}"
     file=${newfile} optionsmenu
