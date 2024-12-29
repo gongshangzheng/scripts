@@ -4,7 +4,7 @@
 
 # terminal emulator
 super + Return
-	alacritty
+	bash ~/scripts/tools/activate-or-launch alacritty
 
 # program launcher
 super + g
@@ -15,16 +15,26 @@ super + d
     rofi -show drun -show-icons
 
 super + q
-	/home/xinyu/application/qutebrowser/.venv/bin/python3 -m qutebrowser &
+	bash ~/scripts/tools/activate-or-launch	qutebrowser
+
+super + e
+    bash ~/scripts/tools/activate-or-launch emacs
+
+super + a
+    bash ~/scripts/tools/activate-or-launch chromium-browser
+
 super + v
-    copyq show
+	bash ~/scripts/tools/toggle-window copyq "copyq show"
 # make sxhkd reload its configuration files:
 
-control + super + alt + shift + bracket{left,right}
-	ibus engine {xkb:us::eng,rime}
+control + super + alt + shift + bracketleft
+	ibus engine xkb:us::eng
+
+control + super + alt + shift + bracketright
+	ibus engine xkb:fr::fra
 
 control + super + alt + shift + backslash
-    ibus engine xkb:fr::fra
+    ! bash $HOME/scripts/tools/program-has-focus --class Emacs && ibus engine rime
 #control + meta + alt + shift + {h,j,k,l,d,v,e}
     #xdotool key {Left,Down,Up,Right,BackSpace,Return,equal}
 #control + meta + alt + shift + bracket{left,right}

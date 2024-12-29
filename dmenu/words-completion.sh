@@ -16,6 +16,7 @@ words["api"]="sk-Jlqw3VNRB6cRbEbGRgvqCHgvS9c4K9jU8J1b6gCoit7EHEJ3"
 words["chatAnywhere host(abord)"]="api.chatanywhere.org"
 words["chatAnywhere host(china)"]="api.chatanywhere.tech"
 words["chatAnywhere endpoint"]="/v1/chat/completions"
+words["rss"]="http://87.106.191.101:1200/"
 
 # Create a string to display key | value pairs
 word_list=""

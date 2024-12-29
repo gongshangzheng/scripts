@@ -7,7 +7,7 @@
 
 LAUNCER="dmenu -l 20 -i -p "
 #LAUNCER="rofi -dmenu -i -p "
-BROWSER="$HOME/scripts/py_scripts/.venv/bin/python -m qutebrowser"
+BROWSER="qutebrowser "
 linkding_rss="http://16.171.150.115:9090/feeds/f3cb12a3a0c94b35a4440f1fa58f038e31fee606/all"
 [ -z "${DISPLAY}" ] && LAUNCER="fzf --prompt "
 
@@ -15,7 +15,8 @@ localBROWSER="$BROWSER "
 [ -n "$*" ] && localBROWSER="$*"
 [ -z "${DISPLAY}" ] && localBROWSER="w3m "
 
-linkding_bookmarks="$(curl -s $linkding_rss | xmlstarlet sel -t -m "//item" -v "concat('linkding: ', title, ' | ', link, ' | ')" -m "category" -v "." -o ', ' -b -n | sed 's/, $//')"
+linkding_bookmarks="$(curl -s $linkding_rss | xmlstarlet sel -t -m "//item" -v "concat('linkding: ', title, ' | ')" -m "category" -v "." -o ' ' -b -v "concat(' | ', link)" -n | sed 's/, $//')"
+
 #qutebrowser_bookmarks=$( sed "s/^/bookmark: /" $HOME/.config/qutebrowser/bookmarks/urls)
 qutebrowser_bookmarks=$(awk '{first=$1; $1=""; print "bookmark:", $0, first}' $HOME/.config/qutebrowser/bookmarks/urls)
 qutebrowser_quickmarks=$( sed "s/^/quickmark: /" $HOME/.config/qutebrowser/quickmarks)
@@ -25,6 +26,8 @@ if [ -f $HOME/.config/qutebrowser/bookmarks/urls ]; then
 else
 	choice=$(echo "🦆" | $LAUNCER -i -p "Search DuckDuckGo:") || exit 1
 fi
+# make sure that the browser is in the foreground
+xdotool search --class $BROWSER windowactivate
 case "$choice" in
 *🦆*)
 	$localBROWSER

@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+# program-has-focus [--name <window_title regex>] [--class <window_class regex>]
+
+while true
+do
+  case "$1" in
+    --class)
+      CLASS="$2";
+      shift; shift;
+      ;;
+    --name)
+      NAME="$2";
+      shift; shift;
+      ;;
+    --)
+      shift;
+      break;
+      ;;
+    *)
+      break;
+      ;;
+  esac
+done
+
+winid="$(xdotool getwindowfocus)";
+
+window_property_matches () {
+    if ! xprop -id "$winid" ${1} | cut -d '"' -f 2 | grep -Ei "^${2}$" > /dev/null;
+    then
+        exit 1;
+    fi
+}
+
+if [ -n "$winid" ]; then
+    if [ -n "$CLASS" ]; then
+        window_property_matches WM_CLASS "${CLASS}";
+    fi
+    if [ -n "$NAME" ]; then
+        window_property_matches WM_NAME "${NAME}";
+    fi
+fi
+
+exit 0;

@@ -1,0 +1,29 @@
+#!/bin/bash
+
+# Function to activate or launch a program
+activate_or_launch() {
+    local class="$1"  # Window class (e.g., "qutebrowser" or "emacs")
+    local command="$2"  # Command to launch the program (e.g., "qutebrowser" or "emacs")
+
+    # Check if a window with the given class exists
+    if xdotool search --class "$class"; then
+        # Activate the existing window
+        xdotool search --class "$class" windowactivate
+    else
+        # Launch the program
+        $command &
+    fi
+}
+
+# Keybinding cases
+case "$1" in
+    "qutebrowser")
+        activate_or_launch "qutebrowser" "qutebrowser"
+        ;;
+    "emacs")
+        activate_or_launch "emacs" "emacs"
+        ;;
+    *)
+        activate_or_launch "$@" "$@"
+        ;;
+esac

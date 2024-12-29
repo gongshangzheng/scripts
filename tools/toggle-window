@@ -1,0 +1,34 @@
+#!/bin/bash
+# cat activate-or-launch >>toggle-window
+#!/bin/bash
+
+# Function to activate or launch a program
+toggle_window() {
+    local class="$1"  # Window class (e.g., "qutebrowser" or "emacs")
+    shift
+    local command="$@"  # Command to launch the program (e.g., "qutebrowser" or "emacs")
+
+   # Check if a window with the given class exists
+    window_id=$(xdotool search --class "$class")
+
+    if [ -z "$window_id" ]; then
+        echo "No window found with the given class, launch the program"
+        echo "Command: $command"
+        $class &
+        $command &
+    else
+        # Check if the window is in the foreground (active)
+        active_window_id=$(xdotool getwindowfocus)
+
+        if [ "$window_id" == "$active_window_id" ]; then
+            echo "Window is in the foreground, close it"
+            xdotool windowkill $window_id
+        else
+            echo "Window exists but not in the foreground, activate it"
+            xdotool windowactivate $window_id
+        fi
+    fi
+}
+
+# Keybinding cases
+toggle_window "$@"
