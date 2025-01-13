@@ -19,7 +19,7 @@ COMMIT-MESSAGE is the message to use for the commit"
           )))
     )
   )
-(defun select-git-directories (directories)
+(defun select-git-directories (drectories)
   "Prompt the user to select directories to push to GitHub from a list of DIRECTORIES.
 Returns a list of selected directories."
   (let ((selected-dirs (completing-read-multiple "Select directories to push (comma-separated): " directories)))
@@ -33,5 +33,20 @@ Returns a list of selected directories."
     (let ((seleted-dirs (select-git-directories git-dirs)))
       ;; (message "Selected directories: %s" seleted-dirs)
       (push-git-directories-to-github seleted-dirs))
+    )
+  )
+
+(defun push-all-git-directories-to-github ()
+  "Push all git repositories to github"
+  (interactive)
+  (let ((git-dirs '("~/MyConf" "~/.doom.d" "~/org" "~/scripts" "~/Code/graduationDesign")))
+    (push-git-directories-to-github git-dirs))
+  )
+
+(defun push-all-git-directories-to-github-without-commit-message ()
+  "Push all git repositories to github"
+  (interactive)
+  (let ((git-dirs '("~/MyConf" "~/.doom.d" "~/org" "~/scripts" "~/Code/graduationDesign")))
+    (push-git-directories-to-github git-dirs "Update")
     )
   )
