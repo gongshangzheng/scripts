@@ -21,6 +21,8 @@ bspc rule -a mplayer2 state=floating
 bspc rule -a Kupfer.py focus=on
 bspc rule -a Screenkey manage=off
 bspc rule -a Zenity state=floating
+bspc rule -a Copyq state=floating
+bspc rule -a Emacs state=tiled
 
 if xrandr -q | grep "HDMI-1-0 connected"; then
     xrandr --output HDMI-1-0 --auto --primary --output eDP-1 --auto --right-of HDMI-1-0
@@ -38,7 +40,10 @@ cd $HOME/MyConf
 git add .
 git commit -m "update"
 
-sudo systemctl --user start mpd &
+mpd &
 #emacs --daemon &
 syncthing &
 copyq &
+keyd-application-mapper -d
+
+bspc desktop -f '^1'

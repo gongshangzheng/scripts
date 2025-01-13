@@ -20,11 +20,14 @@ super + q
 super + e
     bash ~/scripts/tools/activate-or-launch emacs
 
+super + z
+    bash ~/scripts/tools/activate-or-launch zotero
+
 super + a
     bash ~/scripts/tools/activate-or-launch chromium-browser
 
 super + v
-	bash ~/scripts/tools/toggle-window copyq "copyq show"
+	copyq show
 # make sxhkd reload its configuration files:
 
 control + super + alt + shift + bracketleft
@@ -34,7 +37,8 @@ control + super + alt + shift + bracketright
 	ibus engine xkb:fr::fra
 
 control + super + alt + shift + backslash
-    ! bash $HOME/scripts/tools/program-has-focus --class Emacs && ibus engine rime
+    bash $HOME/scripts/tools/toggle-rime.sh
+    #! bash $HOME/scripts/tools/program-has-focus --class Emacs && ibus engine rime
 #control + meta + alt + shift + {h,j,k,l,d,v,e}
     #xdotool key {Left,Down,Up,Right,BackSpace,Return,equal}
 #control + meta + alt + shift + bracket{left,right}
@@ -150,8 +154,12 @@ super + alt + shift + {h,j,k,l}
 	bspc node -z {right -20 0,top 0 20,bottom 0 -20,left 20 0}
 
 # move a floating window
-super + {Left,Down,Up,Right}
+super + alt + {Left,Down,Up,Right}
 	bspc node -v {-20 0,0 20,0 -20,20 0}
+
+super + {Left,Down,Up,Right}
+	bspc node -{f,s} {west,south,north,east}
+
 
 ################################################################################
 ### Head: Application / Launch Rofi
@@ -208,11 +216,11 @@ alt + m
 	amixer -q -D pulse sset Master toggle
 
 ## VolumeDecrease
-alt + shift + comma
+alt + super + comma
 	amixer -q -D pulse sset Master 5%- unmute
 
 ## VolumeIncrease
-alt + shift + period
+alt + super + period
 	amixer -q -D pulse sset Master 5%+ unmute
 
 ## VolumeDecreaseSlowly
@@ -257,11 +265,11 @@ XF86AudioRaiseVolume
 ##
 
 ## Shuf
-alt + w
+alt + bracketleft
 	feh --bg-fill --randomize $HOME/MyConf/wallpapers
 
 ## Default
-alt + ctrl + w
+alt + bracketright
 	feh --bg-fill $HOME/MyConf/wallpapers/starry-night.png $HOME/MyConf/wallpapers/taiji.png
 
 ##

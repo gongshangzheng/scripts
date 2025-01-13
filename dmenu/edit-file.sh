@@ -15,9 +15,10 @@ declare -A files
 files["user dict"]="$HOME/.config/ibus/rime/wubi86_jidian_user.dict.yaml"
 files["default dict"]="$HOME/.config/ibus/rime/wubi86_jidian.dict.yaml"
 files["emacs config"]="$HOME/.doom.d/my_config.org"
-files["dmenu files"]="$HOME/scripts/dmenu/edit-files.sh"
+files["dmenu files"]="$HOME/scripts/dmenu/edit-file.sh"
 files["dmenu bookmarks"]="$HOME/scripts/dmenu/list-qutebrowser-bookmarks.sh"
 files["dmenu commands"]="$HOME/scripts/dmenu/run_commands.sh"
+files["dmenu words"]="$HOME/scripts/dmenu/words-completion.sh"
 
 # Create a string to display key | value pairs
 file_list=""

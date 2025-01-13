@@ -7,7 +7,7 @@
 
 LAUNCER="dmenu -l 20 -i -p "
 #LAUNCER="rofi -dmenu -i -p "
-BROWSER="qutebrowser "
+BROWSER="chromium-browser "
 linkding_rss="http://16.171.150.115:9090/feeds/f3cb12a3a0c94b35a4440f1fa58f038e31fee606/all"
 [ -z "${DISPLAY}" ] && LAUNCER="fzf --prompt "
 

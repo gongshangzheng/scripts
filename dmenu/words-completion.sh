@@ -17,7 +17,9 @@ words["chatAnywhere host(abord)"]="api.chatanywhere.org"
 words["chatAnywhere host(china)"]="api.chatanywhere.tech"
 words["chatAnywhere endpoint"]="/v1/chat/completions"
 words["rss"]="http://87.106.191.101:1200/"
-
+words["linkding"]="http://16.171.150.115:9090/bookmarks?q="
+words["surfingkeys addres"]="https://raw.githubusercontent.com/gongshangzheng/MyConf/refs/heads/master/surfingkeys.js"
+words["css img"]="#+ATTR_HTML: :width 50% :align center"
 # Create a string to display key | value pairs
 word_list=""
 #printf "%s\n" "${!words[@]}"
