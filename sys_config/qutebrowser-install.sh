@@ -30,7 +30,11 @@ if [[ "$(uname)" == "Darwin" ]]; then
     echo "Successfully created symlink: $SOURCE -> $TARGET"
 elif [[ "$(uname)" == "Linux" ]]; then
     # 判断是否已经安装了 qutebrowser
-    if [ $APPLICATION_DIR -ne "" ];
+    if [ ! -d $APPLICATION_DIR ]; then
+	    git clone git@github.com:qutebrowser/qutebrowser.git "$APPLICATION_DIR"
+	    cd $APPLICATION_DIR/qutebrowser
+	    python3 scripts/mkenv.py
+    fi
 fi
 
 parent_path=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
