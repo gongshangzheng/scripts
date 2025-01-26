@@ -12,6 +12,8 @@ sudo apt install bspwm sxhkd -y
 parent_dir=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
 #cd $parent_dir
 
+mkdir $HOME/.config/bspwm/
+mkdir $HOME/.config/sxhkd/
 ln $parent_dir/assets/bspwmrc $HOME/.config/bspwm/bspwmrc
 ln $parent_dir/assets/sxhkdrc $HOME/.config/sxhkd/sxhkdrc
 
