@@ -5,12 +5,6 @@ cd "$parent_path"
 bash ./basic-environment.sh
 bash ./useful-tools.sh
 
-read -p "Do you want to install vim ?(y|[n]):" install_vim
-
-if [ "$install_vim" == "y" ]; then
-    bash ./vim-install.sh
-fi
-
 read -p "Do you want to install git and get it configured ?(y|[n]):" install_git
 
 if [ "$install_git" == "y" ]; then
