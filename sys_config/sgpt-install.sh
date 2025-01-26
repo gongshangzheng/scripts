@@ -12,9 +12,5 @@ sudo apt install python3-virtualenv
 parent_dir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 
 cd $parent_dir
-cd ..
-mkdir -p py-scripts
-virtualenv -p python3 venv
-source venv/bin/activate
+cd ../py_scripts
 pip install -r requirements.txt
-pip install shell-gpt

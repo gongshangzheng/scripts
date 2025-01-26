@@ -37,6 +37,9 @@ control + super + alt + shift + bracketright
 	ibus engine xkb:fr::fra
 
 control + super + alt + shift + backslash
+	ibus engine rime
+
+shift + space
     bash $HOME/scripts/tools/toggle-rime.sh
     #! bash $HOME/scripts/tools/program-has-focus --class Emacs && ibus engine rime
 #control + meta + alt + shift + {h,j,k,l,d,v,e}
@@ -45,6 +48,7 @@ control + super + alt + shift + backslash
 	#ibus enine {xkb:us::eng,rime}
 #
 # bspwm hotkeys
+sudo dpkg -i fd_8.2.1_amd64.deb  # adapt version number and architecture
 control + super + alt + shift + 1
 	bash $HOME/scripts/dmenu/run_commands.sh
 control + super + alt + shift + 2
@@ -55,6 +59,13 @@ control + super + alt + shift + e
     bash $HOME/scripts/dmenu/edit-file.sh
 control + super + alt + shift + t
     bash /home/xinyu/scripts/dmenu/dofi
+
+control + super + alt + shift + p;p
+	mpc play
+control + super + alt + shift + p;n
+	mpc next
+control + super + alt + shift + p;toggle
+	mpc next
 # quit/restart bspwm
 super + alt + {q,r}
 	bspc {quit,wm -r}

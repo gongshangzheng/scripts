@@ -36,7 +36,7 @@ sudo apt-get install -y build-essential libx11-dev libxpm-dev \
     libjpeg-dev libpng-dev libgif-dev libtiff-dev libgtk2.0-dev \
     libncurses-dev libxpm-dev libgnutls28-dev libmagickwand-dev \
     libtree-sitter-dev libgccjit-12-dev libjansson-dev \
-    libmailutils-dev mailutils
+    libmailutils-dev mailutils libsqlite3-dev
 
 # Configure with recommended options
 ./configure --with-native-compilation=aot \

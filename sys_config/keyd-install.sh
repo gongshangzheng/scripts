@@ -1,9 +1,9 @@
 #!/usr/bin/env sh
 #
 parent_path=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
-rm $HOME/.Xmodmap
-ln $parent_path/assets/.Xmodmap $HOME/.Xmodmap
-xmodmap $HOME/.Xmodmap
+# rm $HOME/.Xmodmap
+#ln $parent_path/assets/.Xmodmap $HOME/.Xmodmap
+#xmodmap $HOME/.Xmodmap
 
 ######### keyd
 
@@ -25,10 +25,11 @@ cd $TARGET_DIRECTORY
 echo "Begining make ..."
 make && sudo make install || exit 0
 sudo systemctl enable --now keyd
+
 sudo rm /etc/keyd/default.conf
 
 
-sudo ln $parent_path/assets/default.conf /etc/keyd/default.conf
+sudo ln -s $parent_path/assets/default.conf /etc/keyd/default.conf
 sudo keyd reload
 
 

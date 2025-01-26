@@ -82,7 +82,7 @@ final_config() {
 # Main function
 main() {
     init_environment
-    
+
     install_git
     install_alacritty
     install_zsh
@@ -90,7 +90,7 @@ main() {
     install_qutebrowser
     install_doom_emacs
     install_rime
-    
+
     configure_git_repos
     final_config
 }

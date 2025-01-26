@@ -13,13 +13,13 @@ parent_dir=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
 install_bspwm() {
     echo "Installing bspwm and sxhkd..."
     sudo apt install bspwm sxhkd -y
-    
+
     [ -d $HOME/.config/bspwm ] || mkdir -p $HOME/.config/bspwm
     [ -d $HOME/.config/sxhkd ] || mkdir -p $HOME/.config/sxhkd
-    
+
     ln -sf $parent_dir/assets/bspwmrc $HOME/.config/bspwm/bspwmrc
     ln -sf $parent_dir/assets/sxhkdrc $HOME/.config/sxhkd/sxhkdrc
-    
+
     sudo chmod a+x $HOME/.config/bspwm/bspwmrc
     sudo chmod a+x $HOME/.config/sxhkd/sxhkdrc
     echo "bspwm installation complete"
@@ -67,6 +67,13 @@ install_brightness() {
     echo "brightness controls setup complete"
 }
 
+install_feh(){
+    echo "Installing feh..."
+    sudo apt install feh -y
+    echo "feh installation complete"
+}
+
+
 usage() {
     echo "Usage: $0 [all|bspwm|picom|polybar|rofi|brightness]"
     exit 1
@@ -83,6 +90,7 @@ case $1 in
         install_polybar
         install_rofi
         install_brightness
+
         ;;
     bspwm)
         install_bspwm

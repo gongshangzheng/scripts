@@ -8,4 +8,4 @@
 #   Description   ：
 # ================================================================
 
-/home/xinyu/application/qutebrowser/.venv/bin/python3 -m qutebrowser "$@"
+/home/xinyu/applications/qutebrowser/.venv/bin/python3 -m qutebrowser "$@"

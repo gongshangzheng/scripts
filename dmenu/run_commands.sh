@@ -15,7 +15,7 @@ declare -A commands
 commands["qutebrowser"]="bash ~/scripts/tools/open-qutebrowser.sh"
 commands["firefox"]="firefox"
 commands["emacs"]="emacs"
-commands["emacsclient"]="emacsclient -c"
+commands["emacsclient"]="emacsclient -n"
 commands["run commands"]="bash /home/xinyu/scripts/dmenu/run_commands.sh"
 commands["alacritty"]="alacritty"
 commands["sxhkd reload"]="pkill -x sxhkd; sxhkd &"

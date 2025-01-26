@@ -8,7 +8,7 @@
 #   Description   ：
 # ================================================================
 LAUNCHER="dmenu -l 5 -i -p "
-EDITOR="emacsclient -c"
+EDITOR="emacsclient -n"
 [ -z "${DISPLAY}" ] && LAUNCHER="fzf --prompt "
 
 declare -A files

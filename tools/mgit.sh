@@ -23,9 +23,10 @@ help() {
   echo "  help, -h         Show this help message"
   echo "  rcache, rc       remove cache"
   echo "  init             Create a symbolic link in /usr/local/bin pointing to this script"
-  echo "  rm           Remove a file from Git tracking"
+  echo "  rm           	   Remove a file from Git tracking"
   echo "  clean            Run 'git gc --prune=now --aggressive' to clean the repository"
   echo "  -s               modify the script"
+  echo "  filter	   remove a directory from the history"	
 }
 
 rm() {
@@ -65,6 +66,11 @@ git_rm() {
   echo "Removed $2 from Git tracking."
 }
 
+filter() {
+	if [ -f "$2" ]; then
+		git filter-repo --path $2 --invert-paths
+	fi
+}
 
 # 根据输入的参数执行相应的功能
 if [ $# -eq 0 ]; then

@@ -1,5 +1,5 @@
 #!bin/bash
-
+sudo apt install git-filter-repo
 if ! command -v git &> /dev/null
 then
     echo "git is not installed. Installing..."
