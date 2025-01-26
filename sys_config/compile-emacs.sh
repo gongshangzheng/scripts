@@ -28,8 +28,15 @@ fi
 
 cd "emacs-$version" || exit
 
-# Install build dependencies
-sudo apt-get build-dep -y emacs
+# Remove existing Emacs installation
+sudo apt-get remove --purge emacs emacs-common emacs-gtk emacs-lucid
+
+# Install build dependencies including X toolkit
+sudo apt-get install -y build-essential libx11-dev libxpm-dev \
+    libjpeg-dev libpng-dev libgif-dev libtiff-dev libgtk2.0-dev \
+    libncurses-dev libxpm-dev libgnutls28-dev libmagickwand-dev \
+    libtree-sitter-dev libgccjit-12-dev libjansson-dev \
+    libmailutils-dev mailutils
 
 # Configure with recommended options
 ./configure --with-native-compilation=aot \
@@ -40,7 +47,7 @@ sudo apt-get build-dep -y emacs
             --with-rsvg \
             --with-tiff \
             --with-imagemagick \
-            --with-x-toolkit=lucid \
+            --with-x-toolkit=gtk \
             --with-json \
             --with-mailutils
 
