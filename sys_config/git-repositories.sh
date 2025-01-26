@@ -8,14 +8,42 @@
 #   Description   ：
 # ================================================================
 
+declare -A REPOS=(
+    ["MyConf"]="git@github.com:gongshangzheng/MyConf.git ~/MyConf"
+    ["vim_runtime"]="git@github.com:gongshangzheng/my_vim.git ~/.vim_runtime"
+    ["rime"]="git@github.com:gongshangzheng/my_rime.git ~/.config/ibus/rime"
+    ["doom"]="git@github.com:gongshangzheng/emacs.git ~/.doom.d"
+    ["blogs"]="git@github.com:gongshangzheng/gsai.git ~/blogs"
+    ["org"]="git@github.com:gongshangzheng/Org.git ~/org"
+)
+
+function git_sync_repo() {
+    local name=$1
+    local repo_info=(${REPOS[$name]})
+    local repo_url=${repo_info[0]}
+    local repo_path=${repo_info[1]}
+
+    if [ -d "$repo_path" ]; then
+        echo "Updating $name..."
+        git -C "$repo_path" pull
+    else
+        echo "Cloning $name..."
+        git clone "$repo_url" "$repo_path"
+    fi
+}
+
 if [ ! -d "$HOME/.ssh" ]; then
     echo "ssh dir not exist, please generate ssh key first"
     exit 1
 fi
 
-git clone git@github.com:gongshangzheng/MyConf.git ~/MyConf
-git clone git@github.com:gongshangzheng/my_vim.git ~/.vim_runtime
-git clone git@github.com:gongshangzheng/my_rime.git ~/.config/ibus/rime
-git clone git@github.com:gongshangzheng/emacs.git ~/.doom.d
-git clone git@github.com:gongshangzheng/gsai.git ~/blogs
-git clone git@github.com:gongshangzheng/Org.git ~/org
+# Get list of repo names
+repo_names=(${!REPOS[@]})
+
+# Let user select repos using fzf
+selected_repos=($(printf '%s\n' "${repo_names[@]}" | fzf -m --prompt="Select repos to sync: "))
+
+# Sync selected repos
+for repo in "${selected_repos[@]}"; do
+    git_sync_repo "$repo"
+done
