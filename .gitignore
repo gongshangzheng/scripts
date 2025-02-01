@@ -2,3 +2,4 @@ __pycache__/
 stfolder/
 .aider*
 .env
+*/.DS_Store
