@@ -14,3 +14,4 @@ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh #install rust
 sudo apt install exuberant-ctags
 curl -LsSf https://astral.sh/uv/install.sh | sh #uv python
 sudo apt install xdotool
+sudo apt install ffmpeg

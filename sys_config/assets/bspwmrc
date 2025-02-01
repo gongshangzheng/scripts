@@ -35,10 +35,13 @@ bash ~/.config/polybar/launch.sh --hack &
 
 cd $HOME/.doom.d
 git add .
-git commit -m "update"
+git commit --amend
 cd $HOME/MyConf
 git add .
-git commit -m "update"
+git commit --amend
+cd $HOME/scripts
+git add .
+git commit --amend
 
 mpd &
 #emacs --daemon &

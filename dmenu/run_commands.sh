@@ -32,7 +32,7 @@ commands["rime reload"]="ibus restart"
 commands["chromium"]="chromium-browser"
 commands["projectG1G2 jupyter lab"]="cd ~/Code/projetG1G2 && uv run --with jupyter jupyter lab"
 commands["lepton"]="lepton"
-commands[""]=""
+commands["reboot"]="reboot"
 
 # Create a string to display key | value pairs
 command_list=""

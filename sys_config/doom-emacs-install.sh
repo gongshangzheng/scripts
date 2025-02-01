@@ -29,4 +29,6 @@ $HOME/.emacs.d/bin/doom sync
 sudo apt install librime-dev
 # org music
 sudo apt install mpv
-sudo wget https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -O /usr/local/bin/yt-dlp
+cd ~/scripts/py_scripts
+uv add yt-dlp
+uv pip install -U --pre "yt-dlp[default]"
