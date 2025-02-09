@@ -37,7 +37,7 @@ control + super + alt + shift + bracketright
 	ibus engine xkb:fr::fra
 
 control + super + alt + shift + backslash
-	ibus engine rime
+	ibus engine xkb:us::eng && ibus engine rime
 
 shift + space
     bash $HOME/scripts/tools/toggle-rime.sh
@@ -57,8 +57,10 @@ control + super + alt + shift + w
 control + super + alt + shift + e
     bash $HOME/scripts/dmenu/edit-file.sh
 control + super + alt + shift + t
-    bash /home/xinyu/scripts/dmenu/dofi
+    bash $HOME/Code/OCRTranslation/screenshot_ocr_ai.sh
 
+control + super + alt + shift + u
+	notify-send "hello"
 control + super + alt + shift + p;p
 	mpc play
 control + super + alt + shift + p;n

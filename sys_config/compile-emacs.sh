@@ -46,10 +46,11 @@ sudo apt-get install -y build-essential libx11-dev libxpm-dev \
             --with-jpeg \
             --with-rsvg \
             --with-tiff \
-            --with-imagemagick \
+            # --with-imagemagick \
             --with-x-toolkit=gtk \
             --with-json \
-            --with-mailutils
+            --with-mailutils \
+            --with-sound=alsa
 
 # Build and install
 make clean

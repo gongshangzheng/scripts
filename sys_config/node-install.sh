@@ -35,6 +35,7 @@ nvm install 22.11
 
 # verifies the right Node.js version is in the environment
 node -v # should print `v22.12.0`
+nvm current
 
 # verifies the right npm version is in the environment
 npm -v # should print `10.9.0`
