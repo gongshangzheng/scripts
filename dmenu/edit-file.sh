@@ -19,6 +19,9 @@ files["dmenu files"]="$HOME/scripts/dmenu/edit-file.sh"
 files["dmenu bookmarks"]="$HOME/scripts/dmenu/list-qutebrowser-bookmarks.sh"
 files["dmenu commands"]="$HOME/scripts/dmenu/run_commands.sh"
 files["dmenu words"]="$HOME/scripts/dmenu/words-completion.sh"
+files["bspwm"]="/home/xinyu/MyConf/bspwm/bspwmrc"
+files["zshrc"]="/home/xinyu/.zshrc"
+files["sxhkd"]="/home/xinyu/MyConf/sxhkd/sxhkdrc"
 
 # Create a string to display key | value pairs
 file_list=""
@@ -38,3 +41,4 @@ selected_file=$(echo "$choice" | cut -d'|' -f2)
 #printf "Selected file: %s\n" "$selected_file"
 # Execute the corresponding file
 eval "$EDITOR $selected_file &"
+xdotool search --class emacs windowactivate

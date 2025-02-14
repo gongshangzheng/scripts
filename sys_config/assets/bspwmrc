@@ -42,7 +42,7 @@ bash ~/.config/polybar/launch.sh --hack &
 
 mpd &
 #emacs --daemon &
-# syncthing &
+syncthing &
 # copyq &
 keyd-application-mapper -d
 

@@ -24,7 +24,7 @@ super + z
     bash ~/scripts/tools/activate-or-launch zotero
 
 super + a
-    bash ~/scripts/tools/activate-or-launch chromium-browser
+    bash ~/scripts/tools/activate-or-launch firefox
 
 super + v
 	copyq show

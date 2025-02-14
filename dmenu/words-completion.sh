@@ -26,6 +26,7 @@ words["deepseek api"]="sk-80b0aa04580e488f8bd5da534f55ea4a"
 words["deepseek model"]="deepseek-chat"
 words["siliconFlow api"]="sk-vpxgapqqneldyjxzsbdubfiedytjdrlpmtcistvwpjfjhjql"
 words["siloconFlow baseURL"]="https://api.siliconflow.cn/v1/chat/completions"
+words["french genre prompt"]="现在你是我的法语单词学习助手，给我一个法语单词，让我判断其词性，如果我回答 f, 就代表我认为其是阴性；如果我回答 m, 就代表我认为其是阳性。如果我回答错了，纠正我，并给我一些相似的词及其解释；如果我回答对了，给我一些相似的词及其解释。解释以后，用这些词及原词造句，而后给我一个新的词让我判断词性。"
 # Create a string to display key | value pairs
 word_list=""
 #printf "%s\n" "${!words[@]}"

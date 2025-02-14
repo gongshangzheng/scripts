@@ -7,7 +7,8 @@
 
 LAUNCER="dmenu -l 20 -i -p "
 #LAUNCER="rofi -dmenu -i -p "
-BROWSER="chromium-browser "
+# BROWSER="chromium-browser "
+BROWSER="qutebrowser "
 linkding_rss="http://16.171.150.115:9090/feeds/f3cb12a3a0c94b35a4440f1fa58f038e31fee606/all"
 [ -z "${DISPLAY}" ] && LAUNCER="fzf --prompt "
 
@@ -16,6 +17,7 @@ localBROWSER="$BROWSER "
 [ -z "${DISPLAY}" ] && localBROWSER="w3m "
 
 linkding_bookmarks="$(curl -s $linkding_rss | xmlstarlet sel -t -m "//item" -v "concat('linkding: ', title, ' | ')" -m "category" -v "." -o ' ' -b -v "concat(' | ', link)" -n | sed 's/, $//')"
+printf $linkding_bookmarks
 
 #qutebrowser_bookmarks=$( sed "s/^/bookmark: /" $HOME/.config/qutebrowser/bookmarks/urls)
 qutebrowser_bookmarks=$(awk '{first=$1; $1=""; print "bookmark:", $0, first}' $HOME/.config/qutebrowser/bookmarks/urls)

@@ -33,8 +33,8 @@ commands["chromium"]="chromium-browser"
 commands["projectG1G2 jupyter lab"]="cd ~/Code/projetG1G2 && uv run --with jupyter jupyter lab"
 commands["lepton"]="lepton"
 commands["reboot"]="reboot"
-commands["wechat"]="~/Downloads/Wechat.AppImage"
-commands["seanime"]="~/Downloads/seanime-desktop-2.6.2_Linux_x86_64.AppImage"
+commands["wechat"]="~/softwares/Wechat.AppImage"
+commands["seanime"]="~/softwares/seanime-desktop-2.6.2_Linux_x86_64.AppImage"
 
 # Create a string to display key | value pairs
 command_list=""
