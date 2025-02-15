@@ -35,6 +35,7 @@ commands["lepton"]="lepton"
 commands["reboot"]="reboot"
 commands["wechat"]="~/softwares/Wechat.AppImage"
 commands["seanime"]="~/softwares/seanime-desktop-2.6.2_Linux_x86_64.AppImage"
+commands["init"]="bash /home/xinyu/scripts/guix/init-sys.sh"
 
 # Create a string to display key | value pairs
 command_list=""
