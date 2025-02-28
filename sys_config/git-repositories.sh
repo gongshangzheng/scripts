@@ -9,13 +9,14 @@
 # ================================================================
 
 declare -A REPOS=(
-    ["MyConf"]="git@github.com:gongshangzheng/MyConf.git /home/xinyu/MyConf"
-    ["vim_runtime"]="git@github.com:gongshangzheng/my_vim.git /home/xinyu/.vim_runtime"
-    ["rime"]="git@github.com:gongshangzheng/my_rime.git /home/xinyu/.config/ibus/rime"
-    ["doom"]="git@github.com:gongshangzheng/emacs.git /home/xinyu/.doom.d"
-    ["blogs"]="git@github.com:gongshangzheng/gsai.git /home/xinyu/blogs"
-    ["org"]="git@github.com:gongshangzheng/Org.git /home/xinyu/org"
+    ["MyConf"]="git@github.com:gongshangzheng/MyConf.git $HOME/MyConf"
+    ["vim_runtime"]="git@github.com:gongshangzheng/my_vim.git $HOME/.vim_runtime"
+    ["rime"]="git@github.com:gongshangzheng/my_rime.git $HOME/.config/ibus/rime"
+    ["doom"]="git@github.com:gongshangzheng/emacs.git $HOME/.doom.d"
+    ["blogs"]="git@github.com:gongshangzheng/gsai.git $HOME/blogs"
+    ["org"]="git@github.com:gongshangzheng/Org.git $HOME/org"
 )
+
 
 function git_sync_repo() {
     local name=$1
