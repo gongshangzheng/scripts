@@ -9,13 +9,18 @@
 # ================================================================
 
 declare -A REPOS=(
-    ["MyConf"]="git@github.com:gongshangzheng/MyConf.git /home/xinyu/MyConf"
-    ["vim_runtime"]="git@github.com:gongshangzheng/my_vim.git /home/xinyu/.vim_runtime"
-    ["rime"]="git@github.com:gongshangzheng/my_rime.git /home/xinyu/.config/ibus/rime"
-    ["doom"]="git@github.com:gongshangzheng/emacs.git /home/xinyu/.doom.d"
+    ["MyConf-linux"]="git@github.com:gongshangzheng/MyConf.git /home/xinyu/MyConf"
+    ["MyConf-mac"]="git@github.com:gongshangzheng/MyConf.git /Users/xinyu/MyConf"
+    ["vim_runtime-linux"]="git@github.com:gongshangzheng/my_vim.git /home/xinyu/.vim_runtime"
+    ["vim_runtime-mac"]="git@github.com:gongshangzheng/my_vim.git /Users/xinyu/.vim_runtime"
+    ["rime-linux"]="git@github.com:gongshangzheng/my_rime.git /home/xinyu/.config/ibus/rime"
+    ["rime-mac"]="git@github.com:gongshangzheng/my_rime.git /Users/xinyu/Library/rime/"
+    ["doom-linux"]="git@github.com:gongshangzheng/emacs.git /home/xinyu/.doom.d"
+    ["doom-mac"]="git@github.com:gongshangzheng/emacs.git /Users/xinyu/.doom.d"
     ["blogs"]="git@github.com:gongshangzheng/gsai.git /home/xinyu/blogs"
     ["org"]="git@github.com:gongshangzheng/Org.git /home/xinyu/org"
 )
+
 
 function git_sync_repo() {
     local name=$1
