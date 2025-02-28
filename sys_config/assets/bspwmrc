@@ -21,11 +21,17 @@ bspc rule -a zenity state=floating
 # bspc rule -a Copyq state=floating
 bspc rule -a Emacs state=tiled
 
-if xrandr -q | grep "HDMI-1-0 connected"; then
-    xrandr --output HDMI-1-0 --auto --primary --output eDP-1 --auto --right-of HDMI-1-0
-    #alacritty &
+hdmi_output=$(xrandr -q | grep -Eo "HDMI-1-[0-3] connected" | awk '{print $1}')
+
+if [ -n "$hdmi_output" ]; then
+    xrandr --output "$hdmi_output" --auto --primary --output eDP-1 --auto --right-of "$hdmi_output"
+    bspc monitor "$hdmi_output" -d I II III IV V
 fi
 
+
+bspc monitor eDP-1 -d VI VII VIII IX X
+
+bspc desktop -f '^1'
 feh --bg-fill -randomize $HOME/MyConf/wallpapers/*
 picom &
 bash ~/.config/polybar/launch.sh --hack &
@@ -44,11 +50,6 @@ mpd &
 #emacs --daemon &
 syncthing &
 # copyq &
-keyd-application-mapper -d
+# keyd-application-mapper -d
 
-
-bspc monitor HDMI-1-0 -d I II III IV V
-
-bspc monitor eDP-1 -d VI VII VIII IX X
-
-bspc desktop -f '^1'
+ibus-daemon -drx &

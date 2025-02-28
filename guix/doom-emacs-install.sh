@@ -1,0 +1,32 @@
+#!/bin/bash
+# ================================================================
+#   Copyright (C) 2024 www.361way.com site All rights reserved.
+#
+#   Filename      ：doom-emacs-install.sh
+#   Author        ：yangbk <itybku@139.com>
+#   Create Time   ：2024-12-20 23:03
+#   Description   ：
+# ================================================================
+
+guix install libtool
+guix install libvterm
+guix install libsqlite3
+
+git clone git@github.com:gongshangzheng/emacs.git $HOME/.doom.d
+if [ ! -d "$HOME/.doom.d" ]; then
+    exit 1
+fi
+guix install emacs
+guix install ripgrep df-find
+# On 18.04 or older, ripgrep and fd-find won't be available in
+# official repos. You'll need to install them another way, e.g.
+sudo dpkg -i fd_8.2.1_amd64.deb  # adapt version number and architecture
+git clone --depth 1 https://github.com/hlissner/doom-emacs $HOME/.emacs.d
+$HOME/.emacs.d/bin/doom install
+$HOME/.emacs.d/bin/doom sync
+guix install librime
+# org music
+guix install mpv
+cd ~/scripts/py_scripts
+uv add yt-dlp
+uv pip install -U --pre "yt-dlp[default]"
