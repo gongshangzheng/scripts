@@ -6,18 +6,18 @@ dict_file = "/home/xinyu/.config/ibus/rime/wubi86_jidian_user.dict.yaml"
 
 
 def wubi_coder(input_chars: str) -> str:
+    # Get Wubi codes if not found in dictionary
+    codes = wubi(input_chars, single=False)
+    new_entry = input_chars + "\t" + "".join(codes)
     # Check dictionary first
     with open(dict_file, "r", encoding="utf-8") as f:
         for line in f:
             if line.startswith(input_chars + "\t"):
-                return f"{input_chars} already exists in dictionary"
+                return f"[{new_entry}] already exists in dictionary"
 
-    # Get Wubi codes if not found in dictionary
-    codes = wubi(input_chars, single=False)
-    new_entry = input_chars + "\t" + "".join(codes)
     with open(dict_file, "a", encoding="utf-8") as f:
         f.write(new_entry + "\n")
-    return new_entry
+    return f"[{new_entry}] added"
 
 
 if __name__ == "__main__":
@@ -28,4 +28,4 @@ if __name__ == "__main__":
     args = parser.parse_args()
     input_chars = "".join(args.chars)
     res = wubi_coder(input_chars)
-    print(res, "added")
+    print(res)

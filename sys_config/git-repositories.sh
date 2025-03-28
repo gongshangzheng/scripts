@@ -11,10 +11,13 @@
 declare -A REPOS=(
     ["MyConf"]="git@github.com:gongshangzheng/MyConf.git $HOME/MyConf"
     ["vim_runtime"]="git@github.com:gongshangzheng/my_vim.git $HOME/.vim_runtime"
-    ["rime"]="git@github.com:gongshangzheng/my_rime.git $HOME/.config/ibus/rime"
+    ["rime-linux"]="git@github.com:gongshangzheng/my_rime.git $HOME/.config/ibus/rime"
+    ["rime-mac"]="git@github.com:gongshangzheng/my_rime.git $HOME/Library/Rime"
     ["doom"]="git@github.com:gongshangzheng/emacs.git $HOME/.doom.d"
+    ["my-emacs"]="git@github.com:gongshangzheng/my-emacs.d $HOME/.backup/my-emacs.d"
     ["blogs"]="git@github.com:gongshangzheng/gsai.git $HOME/blogs"
     ["org"]="git@github.com:gongshangzheng/Org.git $HOME/org"
+    ["novel"]="git@github.com:gongshangzheng/Org.git $HOME/org/novel"
 )
 
 
@@ -25,6 +28,9 @@ function git_sync_repo() {
     local repo_path=${repo_info[1]}
 
     if [ -d "$repo_path" ]; then
+        cd $repo_path
+        git add .
+        git commit
         echo "Updating $name..."
         git -C "$repo_path" pull
     else
