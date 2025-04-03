@@ -4,14 +4,14 @@
 #+PROPERTY: header-args:sh :tangle yes :mkdirp yes :shebang "#!/bin/bash"
 
 * Basic Setup
-** 0-basic.sh :noexport:
+** basic.sh :noexport:
 :PROPERTIES:
 :header-args: :tangle 0-basic.sh
 :description: Installs basic terminal tools and utilities
 :dependencies: pacman
 :END:
 
-#+begin_src sh
+#+begin_src sh :tangle basic.sh
 # 安装终端工具和窗口管理工具
 sudo pacman -S zellij fzf zoxide eza waybar jq brightnessctl unrar unzip xdg-desktop-portal-wlr
 
@@ -22,53 +22,307 @@ sudo pacman -S xdotool
 # curl -L https://sw.kovidgoyal.net/kitty/shell-integration/zsh | zsh
 sudo pacman -S wmctrl
 #+end_src
+** font.sh
+
+#+begin_src sh :tangle font.sh
+# 安装字体
+sudo pacman -S ttf-jetbrains-mono-nerd
+# Noto Sans（含中文）
+sudo pacman -S noto-fonts noto-fonts-cjk noto-fonts-emoji
+
+# 思源黑体（Source Han Sans）
+sudo pacman -S adobe-source-han-sans-cn-fonts
+
+# Inter 字体
+sudo pacman -S inter-font
+
+# Roboto
+sudo pacman -S ttf-roboto
+
+# 等宽字体（Fira Code、JetBrains Mono）
+sudo pacman -S ttf-fira-code ttf-jetbrains-mono
+#+end_src
+** theme.sh
+
+#+begin_src sh :tangle theme.sh
+mkdir ~/.themes
+git clone https://github.com/dracula/gtk.git ~/.themes/Dracula
+sudo pacman -S lxappearance
+#+end_src
 
 * Hardware Configuration
-** 1-bluetooth.sh :noexport:
+** bluetooth.sh :noexport:
 :PROPERTIES:
 :header-args: :tangle 1-bluetooth.sh
 :description: Installs and enables Bluetooth support
 :dependencies: pacman, systemd
 :END:
 
-#+begin_src sh
+#+begin_src sh :tangle bluetooth.sh
 sudo pacman -S bluez bluez-utils blueman
 sudo systemctl enable --now bluetooth.service
 #+end_src
+** nvidia.sh
 
-* Synchronization
-** 2-syncthing.sh :noexport:
+#+begin_src sh :tangle nvidia.sh
+#!/bin/bash
+# ================================================================
+#   Copyright (C) 2025 www.361way.com site All rights reserved.
+#
+#   Filename      ：41-nvidia.sh
+#   Author        ：yangbk <itybku@139.com>
+#   Create Time   ：2025-03-28 22:17
+#   Description   ：
+# ================================================================
+sudo pacman -S nvidia nvidia-utils lib32-nvidia-utils nvidia-settings
+sudo pacman -S cuda
+#+end_src
+
+* necessary applications
+** applications.sh :noexport:
 :PROPERTIES:
 :header-args: :tangle 2-syncthing.sh
 :description: Installs Syncthing for file synchronization
 :dependencies: pacman
 :END:
 
-#+begin_src sh
-sudo pacman -S syncthing
+#+begin_src sh :tangle applications.sh
+sudo pacman -S syncthing chromium
 #+end_src
+** zotero.sh
 
-* Applications
-** 3-chromium.sh :noexport:
-:PROPERTIES:
-:header-args: :tangle 3-chromium.sh
-:description: Installs Chromium browser
-:dependencies: pacman
-:END:
+#+begin_src sh  :tangle zotero.sh
+#!/bin/bash
+cd ~/Downloads
+sudo pacman -Syu dbus-glib gtk3 gconf
 
-#+begin_src sh
-sudo pacman -S chromium
+# 下载 Zotero
+wget -O zotero.tar.bz2 "https://www.zotero.org/download/client/dl?channel=release&platform=linux-x86_64&version=7.0.15"
+
+# 解压下载的文件
+tar -xjf zotero.tar.bz2
+
+# 进入解压后的目录
+cd Zotero_linux-x86_64
+
+# 安装 Zotero
+sudo mkdir /opt/zotero
+sudo cp -r * /opt/zotero
+
+# 创建符号链接到 /usr/local/bin
+sudo ln -s /opt/zotero/zotero /usr/local/bin/zotero
+
+# 清理下载的文件
+cd ..
+rm -rf zotero.tar.bz2 Zotero_linux-x86_64
+
+echo "Zotero 安装完成！"
 #+end_src
+** useful-tools.sh
+#+begin_src sh :tangle useful-tools.sh
+sudo pacman -Syu deluge-gtk dmenu rofi xmlstarlet fuse  qt5ct
+yay -S grimblast-git wechat-bin # 或 paru/其他 AUR helper
+sudo pacman -S libappimage
+sudo pacman -S papirus-icon-theme
+#+end_src
+** Emacs
+*** install
+#+begin_src sh :tangle install-emacs.sh
+#!/bin/bash
+# ================================================================
+#   Improved Doom Emacs installer with multi-distro support
+#   Supports: Debian/Ubuntu, Arch Linux
+#   Features: Auto-detect distro, dependency checks, fallback installs
+# ================================================================
 
-** 4-keyd.sh :noexport:
+set -euo pipefail
+
+# Distro detection
+if grep -qEi 'debian|ubuntu' /etc/os-release; then
+    DISTRO="debian"
+elif grep -q 'Arch Linux' /etc/os-release; then
+    DISTRO="arch"
+else
+    echo "Unsupported distribution"
+    exit 1
+fi
+
+# Dependency installer function
+install_pkg() {
+    local pkg=$1
+    echo "Installing $pkg..."
+
+    case $DISTRO in
+        debian)
+            sudo apt-get install -y "$pkg" || {
+                echo "Failed to install $pkg"
+                return 1
+            }
+            ;;
+        arch)
+            sudo pacman -S --noconfirm "$pkg" || {
+                echo "Failed to install $pkg"
+                return 1
+            }
+            ;;
+    esac
+}
+
+# Install basic dependencies
+case $DISTRO in
+    debian)
+        sudo apt-get update
+        for pkg in libtool libvterm-dev libsqlite3-dev ripgrep fd-find mpv; do
+            install_pkg "$pkg" || true
+        done
+
+        # Handle fd-find/ripgrep for older Ubuntu
+        if ! command -v fd &> /dev/null; then
+            echo "Installing fd-find alternative..."
+            wget -O fd.deb "https://github.com/sharkdp/fd/releases/download/v8.2.1/fd_8.2.1_amd64.d
+            sudo dpkg -i fd.deb || sudo apt-get install -f -y
+        fi
+        ;;
+    arch)
+        for pkg in libtool libvterm sqlite ripgrep fd mpv; do
+            install_pkg "$pkg" || true
+        done
+        ;;
+esac
+
+# Install Emacs
+if ! command -v emacs &> /dev/null; then
+    case $DISTRO in
+        debian)
+            sudo add-apt-repository ppa:kelleyk/emacs -y
+            sudo apt-get update
+            install_pkg emacs
+            ;;
+        arch)
+            install_pkg emacs
+            ;;
+    esac
+fi
+
+# Clone Doom Emacs
+if [ ! -d "$HOME/.emacs.d" ]; then
+    git clone --depth 1 https://github.com/hlissner/doom-emacs "$HOME/.emacs.d" || {
+        echo "Failed to clone Doom Emacs"
+        exit 1
+    }
+fi
+
+# Install Doom
+if [ -d "$HOME/.emacs.d" ]; then
+    "$HOME/.emacs.d/bin/doom" install || {
+        echo "Doom install failed"
+        exit 1
+    }
+
+    "$HOME/.emacs.d/bin/doom" sync || {
+        echo "Doom sync failed"
+        exit 1
+    }
+fi
+
+# Optional components
+if [ "$DISTRO" = "debian" ]; then
+    install_pkg librime-dev || echo "Skipping librime-dev"
+fi
+
+# Install yt-dlp if directory exists
+if [ -d "$HOME/scripts/py_scripts" ]; then
+    cd "$HOME/scripts/py_scripts" || exit
+    if command -v uv &> /dev/null; then
+        uv add yt-dlp
+        uv pip install -U --pre "yt-dlp[default]"
+    else
+        pip install -U --pre "yt-dlp[default]"
+    fi
+fi
+
+echo "Doom Emacs installation complete!"
+
+#+end_src
+*** Compile
+#+begin_src sh :tangle compile-emacs.sh
+#!/bin/bash
+
+version="29.2"
+build_dir="$HOME/applications/emacs_build"
+source_file="emacs-$version.tar.gz"
+sig_file="emacs-$version.tar.gz.sig"
+
+# 检测是否为 Arch Linux
+if grep -q "Arch Linux" /etc/os-release; then
+    echo "检测到 Arch Linux，使用 pacman 安装依赖..."
+    sudo pacman -S --needed base-devel git gnutls libx11 libxpm libjpeg-turbo libpng libgif libtiff
+        gtk3 libxpm libgnutls libtree-sitter gcc-libs jansson mailutils sqlite3
+
+    # 移除旧版 Emacs（如果存在）
+    sudo pacman -Rns --noconfirm emacs emacs-common emacs-gtk emacs-lucid
+else
+    echo "非 Arch Linux，使用 apt 安装依赖..."
+    sudo apt-get remove --purge emacs emacs-common emacs-gtk emacs-lucid
+    sudo apt-get install -y build-essential libx11-dev libxpm-dev libjpeg-dev libpng-dev libgif-dev
+        libgtk2.0-dev libncurses-dev libxpm-dev libgnutls28-dev libmagickwand-dev libtree-sitter-de
+        libgccjit-12-dev libjansson-dev libmailutils-dev mailutils libsqlite3-dev
+fi
+
+# 创建构建目录
+mkdir -p "$build_dir"
+cd "$build_dir" || exit
+
+# 下载源码和签名文件
+if [ ! -f "$source_file" ]; then
+    wget -c "https://ftpmirror.gnu.org/emacs/$source_file"
+fi
+
+if [ ! -f "$sig_file" ]; then
+    wget -c "https://ftpmirror.gnu.org/emacs/$sig_file"
+fi
+
+# 验证签名
+gpg --keyserver keyserver.ubuntu.com --recv-keys 17E90D521672C04631B1183EE78DAE0F3115E06B
+gpg --verify "$sig_file"
+
+# 解压源码
+if [ ! -d "emacs-$version" ]; then
+    tar xvfz "$source_file"
+fi
+
+cd "emacs-$version" || exit
+
+# 配置编译选项
+./configure --with-native-compilation=aot \
+            --with-tree-sitter \
+            --with-gif \
+            --with-png \
+            --with-jpeg \
+            --with-rsvg \
+            --with-tiff \
+            --with-x-toolkit=gtk \
+            --with-json \
+            --with-mailutils \
+            --with-sound=alsa
+
+# 编译并安装
+make clean
+make -j$(nproc)
+sudo make install
+
+# 验证安装
+emacs --version
+#+end_src
+** keyd.sh :noexport:
 :PROPERTIES:
 :header-args: :tangle 4-keyd.sh
 :description: Installs and configures keyd for keyboard remapping
 :dependencies: git, make, systemd
 :END:
 
-#+begin_src sh
-#!/usr/bin/env sh
+#+begin_src sh :tangle keyd.sh
+#!/usr/bin/env sh 
 
 parent_path=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
 
@@ -92,16 +346,34 @@ make && sudo make install || exit 0
 sudo systemctl enable --now keyd
 sudo keyd reload
 #+end_src
+* Developpement
+#+begin_src sh :tangle developpement.sh
 
+# basic
+sudo pacman -S --needed git base-devel cmake make
+git clone https://aur.archlinux.org/yay.git
+cd yay
+makepkg -si
+
+sudo pacman -S qt5-base qt5-tools
+# python
+# sudo pacman -S uv
+sudo pacman -S python-virtualenv
+# sudo pacman -S pyenv
+# Miniconda
+yay -S miniconda3
+sudo pacman -Syu gcc
+
+#+end_src
 * Shell Configuration  
-** 5-zsh.sh :noexport:
+** zsh.sh :noexport:
 :PROPERTIES:
 :header-args: :tangle 5-zsh.sh
 :description: Configures Zsh with plugins and themes
 :dependencies: pacman, git, curl
 :END:
 
-#+begin_src sh
+#+begin_src sh :tangle zsh.sh
 sudo pacman -S zsh starship
 sudo chsh -s $(which zsh)
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
@@ -113,14 +385,14 @@ git clone https://github.com/zsh-users/zsh-autosuggestions ~/.oh-my-zsh/custom/p
 git clone https://github.com/zsh-users/zsh-syntax-highlighting ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
 #+end_src
 
-** 6-rime.sh :noexport:
+** rime.sh :noexport:
 :PROPERTIES:
 :header-args: :tangle 6-rime.sh
 :description: Installs Rime input method
 :dependencies: pacman
 :END:
 
-#+begin_src sh
+#+begin_src sh :tangle rime.sh
 sudo pacman -S ibus ibus-rime
 #+end_src
 
@@ -132,7 +404,7 @@ sudo pacman -S ibus ibus-rime
 :dependencies: git, fzf
 :END:
 
-#+begin_src sh
+#+begin_src sh :tangle git-repositories.sh
 #!/bin/bash
 # ================================================================
 #   Copyright (C) 2024 www.361way.com site All rights reserved.

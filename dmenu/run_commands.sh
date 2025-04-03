@@ -8,7 +8,8 @@
 #   Description   ：
 # ================================================================
 #LAUNCHER="dmenu -l 5 -i -p "
-LAUNCER="rofi -dmenu -i -p "
+#LAUNCER="rofi -dmenu -i -p "
+LAUNCER="wofi --dmenu -i -p "
 [ -z "${DISPLAY}" ] && LAUNCER="fzf --prompt "
 
 declare -A commands

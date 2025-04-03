@@ -1,4 +1,5 @@
 #!/bin/bash
+#!/bin/bash
 # ================================================================
 #   Copyright (C) 2024 www.361way.com site All rights reserved.
 #
@@ -16,10 +17,10 @@ declare -A REPOS=(
     ["doom"]="git@github.com:gongshangzheng/emacs.git $HOME/.doom.d"
     ["my-emacs"]="git@github.com:gongshangzheng/my-emacs.d $HOME/.backup/my-emacs.d"
     ["blogs"]="git@github.com:gongshangzheng/gsai.git $HOME/blogs"
-    ["org"]="git@github.com:gongshangzheng/Org.git $HOME/org"
-    ["novel"]="git@github.com:gongshangzheng/Org.git $HOME/org/novel"
+    ["org"]="git@github.com:gongshangzheng/Org $HOME/org"
+    ["novel"]="git@github.com:gongshangzheng/Novel $HOME/org/roam/novel"
+    ["scripts"]="git@github.com:gongshangzheng/scripts $HOME/scripts"
 )
-
 
 function git_sync_repo() {
     local name=$1

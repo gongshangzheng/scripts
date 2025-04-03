@@ -1,17 +1,27 @@
 #!/bin/bash
 
-# Function to activate or launch a program
+# Function to activate or launch a program with Hyprland/Wayland support
 activate_or_launch() {
-    local class="$1"  # Window class (e.g., "qutebrowser" or "emacs")
-    local command="$2"  # Command to launch the program (e.g., "qutebrowser" or "emacs")
+    local identifier="$1"  # Window class/name
+    local command="$2"     # Command to launch
 
-    # Check if a window with the given class exists
-    if xdotool search --class "$class"; then
-        # Activate the existing window
-        xdotool search --class "$class" windowactivate
+    # Detect session type
+    if [ "$XDG_SESSION_TYPE" = "wayland" ]; then
+        # Hyprland/Wayland implementation
+        if hyprctl clients | grep -q "$identifier"; then
+            # Focus existing window
+            hyprctl dispatch focuswindow "$identifier"
+        else
+            # Launch new instance
+            $command &
+        fi
     else
-        # Launch the program
-        $command &
+        # X11 implementation
+        if xdotool search --class "$identifier" >/dev/null 2>&1; then
+            xdotool search --class "$identifier" windowactivate
+        else
+            $command &
+        fi
     fi
 }
 
@@ -21,9 +31,53 @@ case "$1" in
         activate_or_launch "qutebrowser" "qutebrowser"
         ;;
     "emacs")
-        activate_or_launch "emacs" "emacs"
+        # Special handling for Emacs server
+        if [ "$XDG_SESSION_TYPE" = "wayland" ]; then
+            if emacsclient -e 't' >/dev/null 2>&1; then
+                emacsclient -c -a "" &
+            else
+                emacs --daemon && emacsclient -c -a "" &
+            fi
+        else
+            activate_or_launch "emacs" "emacs"
+        fi
         ;;
     *)
-        activate_or_launch "$@" "$@"
+        activate_or_launch "$1" "$1"
         ;;
 esac
+
+# #!/bin/bash
+
+# # Function to activate or launch a program (X11-only with wmctrl)
+# activate_or_launch() {
+#     local identifier="$1"  # Window class/name
+#     local command="$2"     # Command to launch
+
+#     # Check if window exists (by class or title)
+#     if wmctrl -lx | grep -qi "$identifier"; then
+#         # Focus existing window
+#         wmctrl -a "$identifier"
+#     else
+#         # Launch new instance
+#         $command &
+#     fi
+# }
+
+# # Keybinding cases
+# case "$1" in
+#     "qutebrowser")
+#         activate_or_launch "qutebrowser" "qutebrowser"
+#         ;;
+#     "emacs")
+#         # Special handling for Emacs server (X11-only)
+#         if emacsclient -e 't' >/dev/null 2>&1; then
+#             emacsclient -c -a "" &
+#         else
+#             emacs --daemon && emacsclient -c -a "" &
+#         fi
+#         ;;
+#     *)
+#         activate_or_launch "$1" "$1"
+#         ;;
+# esac
