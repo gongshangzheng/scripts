@@ -1,0 +1,190 @@
+#+TITLE: Arch Linux Configuration Scripts
+#+AUTHOR: xinyu
+#+OPTIONS: toc:2 num:nil
+#+PROPERTY: header-args:sh :tangle yes :mkdirp yes :shebang "#!/bin/bash"
+
+* Basic Setup
+** 0-basic.sh :noexport:
+:PROPERTIES:
+:header-args: :tangle 0-basic.sh
+:description: Installs basic terminal tools and utilities
+:dependencies: pacman
+:END:
+
+#+begin_src sh
+# 安装终端工具和窗口管理工具
+sudo pacman -S zellij fzf zoxide eza waybar jq brightnessctl unrar unzip xdg-desktop-portal-wlr
+
+# 安装自动化工具和开发工具
+sudo pacman -S xdotool
+
+# 安装Kitty终端shell集成
+# curl -L https://sw.kovidgoyal.net/kitty/shell-integration/zsh | zsh
+sudo pacman -S wmctrl
+#+end_src
+
+* Hardware Configuration
+** 1-bluetooth.sh :noexport:
+:PROPERTIES:
+:header-args: :tangle 1-bluetooth.sh
+:description: Installs and enables Bluetooth support
+:dependencies: pacman, systemd
+:END:
+
+#+begin_src sh
+sudo pacman -S bluez bluez-utils blueman
+sudo systemctl enable --now bluetooth.service
+#+end_src
+
+* Synchronization
+** 2-syncthing.sh :noexport:
+:PROPERTIES:
+:header-args: :tangle 2-syncthing.sh
+:description: Installs Syncthing for file synchronization
+:dependencies: pacman
+:END:
+
+#+begin_src sh
+sudo pacman -S syncthing
+#+end_src
+
+* Applications
+** 3-chromium.sh :noexport:
+:PROPERTIES:
+:header-args: :tangle 3-chromium.sh
+:description: Installs Chromium browser
+:dependencies: pacman
+:END:
+
+#+begin_src sh
+sudo pacman -S chromium
+#+end_src
+
+** 4-keyd.sh :noexport:
+:PROPERTIES:
+:header-args: :tangle 4-keyd.sh
+:description: Installs and configures keyd for keyboard remapping
+:dependencies: git, make, systemd
+:END:
+
+#+begin_src sh
+#!/usr/bin/env sh
+
+parent_path=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
+
+REPO_URL="https://github.com/rvaiya/keyd.git"
+TARGET_DIRECTORY="$APPLICATION_DIR/keyd/"
+if [ -d "$TARGET_DIRECTORY" ]; then
+    echo "目标目录 '$TARGET_DIRECTORY' 已存在，跳过克隆。"
+else
+    git clone "$REPO_URL" "$TARGET_DIRECTORY"
+    cd $TARGET_DIRECTORY
+    sudo systemctl enable keyd && sudo systemctl start keyd
+    if [ ! -e "$HOME/.XCompose" ]; then
+	ln /usr/local/share/keyd/keyd.compose $HOME/.XCompose
+    fi
+    sudo usermod -aG keyd $USER
+fi
+
+cd $TARGET_DIRECTORY
+echo "Begining make ..."
+make && sudo make install || exit 0
+sudo systemctl enable --now keyd
+sudo keyd reload
+#+end_src
+
+* Shell Configuration  
+** 5-zsh.sh :noexport:
+:PROPERTIES:
+:header-args: :tangle 5-zsh.sh
+:description: Configures Zsh with plugins and themes
+:dependencies: pacman, git, curl
+:END:
+
+#+begin_src sh
+sudo pacman -S zsh starship
+sudo chsh -s $(which zsh)
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+sudo pacman -S powerline-fonts
+# 安装 zsh-autosuggestions
+git clone https://github.com/zsh-users/zsh-autosuggestions ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions
+
+# 安装 zsh-syntax-highlighting
+git clone https://github.com/zsh-users/zsh-syntax-highlighting ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
+#+end_src
+
+** 6-rime.sh :noexport:
+:PROPERTIES:
+:header-args: :tangle 6-rime.sh
+:description: Installs Rime input method
+:dependencies: pacman
+:END:
+
+#+begin_src sh
+sudo pacman -S ibus ibus-rime
+#+end_src
+
+* Git Setup
+** 10-git-repositories.sh :noexport:
+:PROPERTIES:
+:header-args: :tangle 10-git-repositories.sh
+:description: Manages git repository synchronization
+:dependencies: git, fzf
+:END:
+
+#+begin_src sh
+#!/bin/bash
+# ================================================================
+#   Copyright (C) 2024 www.361way.com site All rights reserved.
+#
+#   Filename      ：git-repositories.sh
+#   Author        ：yangbk <itybku@139.com>
+#   Create Time   ：2024-12-21 00:07
+#   Description   ：
+# ================================================================
+
+declare -A REPOS=(
+    ["MyConf"]="git@github.com:gongshangzheng/MyConf.git $HOME/MyConf"
+    ["vim_runtime"]="git@github.com:gongshangzheng/my_vim.git $HOME/.vim_runtime"
+    ["rime-linux"]="git@github.com:gongshangzheng/my_rime.git $HOME/.config/ibus/rime"
+    ["rime-mac"]="git@github.com:gongshangzheng/my_rime.git $HOME/Library/Rime"
+    ["doom"]="git@github.com:gongshangzheng/emacs.git $HOME/.doom.d"
+    ["my-emacs"]="git@github.com:gongshangzheng/my-emacs.d $HOME/.backup/my-emacs.d"
+    ["blogs"]="git@github.com:gongshangzheng/gsai.git $HOME/blogs"
+    ["org"]="git@github.com:gongshangzheng/Org.git $HOME/org"
+)
+
+function git_sync_repo() {
+    local name=$1
+    local repo_info=(${REPOS[$name]})
+    local repo_url=${repo_info[0]}
+    local repo_path=${repo_info[1]}
+
+    if [ -d "$repo_path" ]; then
+        cd $repo_path
+        git add .
+        git commit
+        echo "Updating $name..."
+        git -C "$repo_path" pull
+    else
+        echo "Cloning $name..."
+        git clone "$repo_url" "$repo_path"
+    fi
+}
+
+if [ ! -d "$HOME/.ssh" ]; then
+    echo "ssh dir not exist, please generate ssh key first"
+    exit 1
+fi
+
+# Get list of repo names
+repo_names=(${!REPOS[@]})
+
+# Let user select repos using fzf
+selected_repos=($(printf '%s\n' "${repo_names[@]}" | fzf -m --prompt="Select repos to sync: "))
+
+# Sync selected repos
+for repo in "${selected_repos[@]}"; do
+    git_sync_repo "$repo"
+done
+#+end_src
