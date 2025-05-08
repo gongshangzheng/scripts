@@ -8,7 +8,7 @@
 #   Description   ：
 # ================================================================
 #LAUNCHER="dmenu -l 5 -i -p "
-#LAUNCER="rofi -dmenu -i -p "
+# LAUNCER="rofi -dmenu -i -p "
 LAUNCER="wofi --dmenu -i -p "
 [ -z "${DISPLAY}" ] && LAUNCER="fzf --prompt "
 
@@ -24,6 +24,7 @@ commands["sxhkd reload"]="pkill -x sxhkd; sxhkd &"
 commands["polybar reload"]="~/.config/polybar/hack/launch.sh"
 commands["bspwm reload"]="bspc wm -r"
 commands["logout"]="bspc quit"
+commands["logout hyprland"]="hyprctl dispatch exit"
 commands["shutdown"]="shutdown now"
 commands["screen shot"]="flameshot gui"
 commands["default windows"]="bash /home/xinyu/scripts/tools/open-default-windows.sh"

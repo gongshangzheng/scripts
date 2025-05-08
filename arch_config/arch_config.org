@@ -437,6 +437,65 @@ echo "可以运行 'alacritty' 启动终端"
 #+begin_src sh :tangle nutshell.sh
 yay -S nutstore
 #+end_src
+** youtube music
+*** pacman
+#+begin_src sh :tangle youtube_music.sh
+#!/bin/bash
+
+# GitHub 仓库信息
+REPO="th-ch/youtube-music"
+PKG_NAME="youtube-music"
+
+# 获取最新版本号
+LATEST_VERSION=$(curl -s "https://api.github.com/repos/$REPO/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
+
+if [ -z "$LATEST_VERSION" ]; then
+    echo "❌ 无法获取最新版本号！"
+    exit 1
+fi
+
+echo "🔍 最新版本: $LATEST_VERSION"
+
+# 检查是否已安装旧版本
+INSTALLED_VERSION=$(pacman -Qi "$PKG_NAME" 2>/dev/null | grep 'Version' | awk '{print $3}')
+
+if [ -n "$INSTALLED_VERSION" ]; then
+    echo "📦 已安装版本: $INSTALLED_VERSION"
+    if [ "$INSTALLED_VERSION" == "$LATEST_VERSION" ]; then
+        echo "✅ 已经是最新版本，无需更新。"
+        exit 0
+    else
+        echo "🔄 发现新版本，准备更新..."
+    fi
+fi
+
+# 下载 .pacman 包
+DOWNLOAD_URL="https://github.com/$REPO/releases/download/$LATEST_VERSION/$PKG_NAME-${LATEST_VERSION#v}.pacman"
+TEMP_PKG="/tmp/$PKG_NAME-${LATEST_VERSION#v}.pacman"
+
+echo "⬇️ 下载 $DOWNLOAD_URL ..."
+if ! curl -L -o "$TEMP_PKG" "$DOWNLOAD_URL"; then
+    echo "❌ 下载失败！"
+    exit 1
+fi
+
+# 安装
+echo "🔧 正在安装..."
+sudo pacman -U --noconfirm "$TEMP_PKG"
+
+# 清理临时文件
+rm -f "$TEMP_PKG"
+
+echo "🎉 安装完成！"
+#+end_src
+*** yay
+#+begin_src sh
+sudo yay -S youtube-music-bin
+#+end_src
+** Microsoft bing
+#+begin_src sh
+yay -S microsoft-edge-stable-bin
+#+end_src
 * Developpement
 ** basic-developpement
 #+begin_src sh :tangle developpement.sh
